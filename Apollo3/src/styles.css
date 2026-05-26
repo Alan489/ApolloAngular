@@ -1,0 +1,35 @@
+/* You can add global styles to this file, and also import other style files */
+
+@font-face {
+  font-family: "Speeday";
+  src: url('/assets/fonts/Speeday-Regular-FFP.ttf') format("truetype");
+  font-weight: normal;
+  font-style: normal;
+}
+
+
+:root {
+  --bg: #070d18;
+  --bg-soft: #101a2e;
+  --panel: #0f1727;
+  --panel-alt: #121f35;
+  --border: #283752;
+  --text: #eef4ff;
+  --muted: #9fb1d0;
+  --ok: #6ea51d;
+  --ok-soft: #ddf0bc;
+  --alert: #9c2f3b;
+  --alert-soft: #f8d3d9;
+  --shadow: 0 12px 36px rgba(0, 0, 0, 0.35);
+}
+
+
+html {
+  margin: 0px;
+  padding: 0px;
+  height: 100%;
+  width: 100%;
+  background: var(--bg);
+  color: var(--text);
+  font-family:Helvetica, Arial, sans-serif;
+}

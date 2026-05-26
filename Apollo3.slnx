@@ -1,0 +1,6 @@
+<Solution>
+  <Project Path="Apollo3/Apollo3.esproj">
+    <Build />
+    <Deploy />
+  </Project>
+</Solution>
