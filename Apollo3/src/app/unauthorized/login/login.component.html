@@ -8,7 +8,7 @@
         System Address
       </div>
       <div class="formInput">
-        <input type="text" placeholder="System Address" />
+        <input type="text" placeholder="System Address" [(ngModel)]="sysadd" />
       </div>
     </div>
     <div class="formElement">
@@ -16,7 +16,7 @@
         Username
       </div>
       <span class="formInput">
-        <input type="text" placeholder="Username" />
+        <input type="text" placeholder="Username" [(ngModel)]="username" />
       </span>
     </div>
     <div class="formElement">
@@ -24,18 +24,18 @@
         Password
       </div>
       <span class="formInput">
-        <input type="password" placeholder="Password" />
+        <input type="password" placeholder="Password" [(ngModel)]="password" />
       </span>
     </div>
     <div class="formElement">
       <span class="formInputButton">
-        <button class="formButton">Log in</button>
-        <button class="formButtonTransfer">Transfer to MDT</button>
+        <button class="formButton" (click)="login()">Log in</button>
+        <button class="formButtonTransfer">MDT Log in</button>
       </span>
     </div>
     <div class="formResponse">
-      <span class="formResponse">
-        &nbsp;
+      <span class="formResponse {{netResponseType}}">
+        &nbsp;{{netResponse}}
       </span>
     </div>
   </div>

@@ -19,6 +19,7 @@
   border-bottom: 1px solid var(--border);
   margin-bottom: 15px;
   width: 100%;
+  text-shadow: 3px 5px 4px black;
 }
 
 .formInput{
@@ -71,5 +72,11 @@
 .formResponse{
   margin-top: 2px;
   margin-bottom: 5px;
+}
+
+.error {
   color: var(--alert-soft);
+}
+.success {
+  color: var(--ok-soft);
 }
