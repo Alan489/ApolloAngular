@@ -37,5 +37,39 @@ unitsidebar {
   direction: rtl;
   scrollbar-width: thin;
   scrollbar-color: var(--border) var(--panel);
-  
 }
+
+.RIGHT {
+  display: flex;
+  flex: 1;
+  border: 1px solid var(--border);
+  background-color: var(--panel);
+  border-radius: 10px;
+  padding: 5px;
+  margin-left: 10px;
+}
+
+incidentsdashboard {
+  display: flex;
+  flex: 1;
+  overflow-y: scroll;
+  direction: rtl;
+  scrollbar-width: thin;
+  scrollbar-color: var(--border) var(--panel);
+}
+.RIGHTNoScroll {
+  display: flex;
+  flex: 1;
+}
+
+incidentedit {
+  display: flex;
+  flex: 1;
+  border: 1px solid var(--border);
+  background-color: var(--panel);
+  border-radius: 10px;
+  padding: 5px;
+  margin-left: 10px;
+}
+
+

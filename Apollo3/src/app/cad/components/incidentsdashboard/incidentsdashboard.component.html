@@ -1,3 +1,43 @@
-<div class="UIncidentsDashboardContainer">
-  IncidentsDashboard
+<div class="IncidentsDashboardContainer">
+  <div class="IncidentsDashboardHeader">
+    <div class="IncidentsDashboardHeaderText">
+      INCIDENTS
+    </div>
+    <div class="IncidentsDashboardHeaderButton">
+      <button class="IncidentsDashboardHeaderButtonButton">New Incident</button>
+    </div>
+  </div>
+  <div class="tableContainer">
+    <table class="IncidentsTable">
+      <tr>
+        <th>Call Number</th>
+        <th>Type</th>
+        <th>Location</th>
+        <th>Updated</th>
+        <th>Opened</th>
+        <th>Attached Units</th>
+      </tr>
+      <tr *ngFor="let incident of incidents; trackBy: trackIncident" [ngClass]="{'Incident': true, 'Warning': incident.updated < warningTime, 'Alert': incident.updated < alertTime, 'NoUnits': incident.attachedUnits == ''}" (click)="oi(incident.incident_id)">
+        <td class="IncidentCallNumber">
+          {{ incident.call_number }}
+        </td>
+        <td class="IncidentType">
+          {{ incident.call_type }}
+        </td>
+        <td class="IncidentLocation">
+          {{ incident.location }}
+        </td>
+        <td class="IncidentUpdated">
+          {{ time(incident.updated) }}
+        </td>
+        <td class="IncidentOpened">
+          {{ time(incident.ts_opened) }}
+        </td>
+        <td class="IncidentUnits">
+          {{ incident.attachedUnits }}
+        </td>
+      </tr>
+    </table>
+    
+  </div>
 </div>

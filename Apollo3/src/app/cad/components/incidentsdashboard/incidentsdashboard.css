@@ -1,78 +1,12 @@
-.HeaderContainer {
-  position: relative;
-  left: 0;
-  right: 0;
-  display: flex;
-}
-
-.Header {
-  flex: 1;
-  display: inline-flex;
-  position: relative;
+.IncidentsDashboardContainer{
   padding: 10px;
-  border: 1px solid var(--border);
-  overflow: clip;
-  background-color: var(--panel);
-  border-radius: 5px;
+  display: flex;
+  flex: 1;
+  direction:ltr;
+  flex-direction:column;
 }
 
-.HeaderLeft {
-  overflow: clip;
-  align-content: center;
-  position: relative;
-  float: left;
-  width: 33%;
-  color: var(--text-muted);
-  line-height: 1em;
-  flex-wrap: nowrap;
-  text-shadow: 1px 1px 2px black;
-  white-space: nowrap;
-}
-
-  .HeaderLeft span {
-    overflow: clip;
-    font-size: .6em;
-  }
-
-.HeaderMiddle {
-  position: relative;
-  text-align: center;
-  width: max(33%,500px);
-  font-family: "Speeday";
-  font-size: 30px;
-  color: var(--text-muted);
-  top: -5px;
-  overflow: clip;
-  text-shadow: 3px 5px 4px black;
-  align-content: center;
-}
-
-.HeaderRight {
-  text-align: right;
-  position: relative;
-  width: 34%;
-  padding-right: 15px;
-  color: var(--border);
-  align-content: center;
-}
-
-.HeaderClock {
-  position: relative;
-  float: right;
-  padding-right: 6px;
-  padding-left: 6px;
-  font-size: 30px;
-  color: var(--text-muted);
-  font-family: "Noto Sans Mono", monospace;
-  font-weight: bold;
-  align-content: center;
-  text-shadow: 3px 5px 4px black;
-  border: 1px solid var(--border);
-  border-radius: 10px;
-  background-color: var(--panel-alt);
-}
-
-.logoutButton {
+.IncidentsDashboardHeaderButtonButton {
   margin-top: 2px;
   padding: 4px;
   border-radius: 7px;
@@ -82,7 +16,95 @@
   transition: color .25s, border-color .25s;
 }
 
-.logoutButton:hover {
-  border-color: var(--text);
-  color: var(--text);
+  .IncidentsDashboardHeaderButtonButton:hover {
+    border-color: var(--text);
+    color: var(--text);
+  }
+
+
+.IncidentsDashboardHeader{
+  display: flex;
+  height: 2.1em;
+  align-items: center;
+  border-bottom: 1px solid var(--border);
+  padding-bottom: 5px;
+  margin-bottom: 5px;
+}
+.IncidentsDashboardHeaderButton{
+  position: relative;
+  float: right;
+}
+.IncidentsDashboardHeaderText{
+  display: flex;
+  flex: 1;
+  font-family: "Speeday";
+  font-size: 1.5em;
+}
+
+.tableContainer {
+  width: 98%;
+  margin-bottom: 5px;
+  padding: 10px;
+  background-color: var(--panel-alt);
+  border: 1px solid var(--border);
+  border-radius: 7px;
+}
+
+.IncidentsTable {
+  width: 100%;
+  border-collapse: collapse;
+  border: 1px solid var(--border);
+}
+
+  .IncidentsTable tr:first-child {
+    background-color: var(--panel);
+    font-size: .75em;
+    white-space: nowrap;
+  }
+
+  .IncidentsTable td {
+    padding-left: 10px;
+    padding-right: 10px;
+  }
+
+  .IncidentsTable tr:hover:not(:first-child) {
+    background-color: rgba(255,255,255,.1);
+  }
+
+  .IncidentsTable tr td:last-child {
+    padding-right: 10px;
+  }
+
+  .IncidentsTable td {
+    line-height: 1.7em;
+  }
+
+  .IncidentsTable tr {
+    line-height: 1em;
+    border-bottom: 1px solid var(--border);
+    border-right: 1px solid var(--border);
+  }
+
+  .IncidentsTable tr td:not(:first-child) {
+    line-height: 1.1em;
+    border-bottom: 1px solid var(--border);
+    border-left: 1px solid var(--border);
+    
+  }
+
+  .IncidentsTable tr:first-child {
+    line-height: 1.75em;
+    border-bottom: 2px solid var(--border);
+  }
+
+.Incident.Warning td:nth-child(4) {
+  background-color: var(--busy);
+}
+
+  .Incident.Alert td:nth-child(4) {
+    background-color: var(--alert);
+  }
+
+.Incident.NoUnits td:nth-child(6) {
+  background-color: var(--busy);
 }

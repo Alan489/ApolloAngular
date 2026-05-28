@@ -4,12 +4,18 @@
   </div>
 
   <div class="BODY">
+    <div class="LEFT">
+      <unitsidebar (unitClicked)="unitClicked($event)" (incidentClicked)="incidentClicked($event)" (attachClicked)="attachClicked($event)" [units]="units" [state]="state"></unitsidebar>
+    </div>
     <div *ngIf="state == 'Dashboard'" class="DASHBOARD">
-      <div class="LEFT">
-        <unitsidebar (unitClicked)="unitClicked($event)" [units]="units"></unitsidebar>
-
+      <div class="RIGHT">
+        <incidentsdashboard [incidents]="incidents" (incidentClicked)="incidentClicked($event)"></incidentsdashboard>
       </div>
-      <incidentsdashboard></incidentsdashboard>
+    </div>
+    <div *ngIf="state.startsWith('I')" class="DASHBOARD">
+      <div class="RIGHTNoScroll">
+        <incidentedit [incident]="incident"></incidentedit>
+      </div>
     </div>
   </div>
 
