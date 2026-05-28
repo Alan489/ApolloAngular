@@ -1,0 +1,41 @@
+.screen {
+  display: flex;
+  flex-direction: column;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  top: 0;
+  position: absolute;
+  padding: 10px;
+  
+}
+
+.BODY {
+  margin-top: 7px;
+  display: flex;
+  flex: 1;
+  min-height: 0;
+}
+.DASHBOARD {
+  display: flex;
+  flex: 1;
+  min-height: 0;
+}
+
+.LEFT {
+  border: 1px solid var(--border);
+  background-color: var(--panel);
+  border-radius: 10px;
+  padding: 5px;
+}
+
+unitsidebar {
+  display: flex;
+  width: 15em;
+  height: 100%;
+  overflow-y: scroll;
+  direction: rtl;
+  scrollbar-width: thin;
+  scrollbar-color: var(--border) var(--panel);
+  
+}

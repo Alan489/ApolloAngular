@@ -1,0 +1,86 @@
+<div class="LoadingAlert" *ngIf="loading==true">
+  Loading...
+</div>
+
+<div class="UnitSideBarContainer" *ngIf="loading==false">
+  <div class="UnitSideBarInServiceContainer">
+    <div class="UnitSideBarInServiceHeader">
+      AVAILABLE UNITS
+    </div>
+    <div class="UnitSideBarInServiceUnits">
+
+
+      <div *ngFor="let unit of inServiceIndividual">
+
+        <!--Weeeeeee a comment!-->
+
+        <div *ngIf="unit.status == 'In Service'">
+          <div class="UnitInService">
+            <div class="UnitInServiceName">
+              {{unit.unit}}
+            </div>
+            <div class="UnitInServiceDescription">
+              Available
+            </div>
+            <div class="UnitInServiceDescription">
+              <button class="BusyButton" (click)="busy(unit.unit)">Busy</button>
+              <button class="OOSButton"  (click)="outService(unit.unit)">Unavailable</button>
+            </div>
+          </div>
+        </div>
+
+        <div *ngIf="unit.status == 'Busy'">
+          <div class="UnitBusy">
+            <div class="UnitInServiceName">
+              {{unit.unit}}
+            </div>
+            <div class="UnitInServiceDescription">
+              Busy
+            </div>
+            <div class="UnitInServiceDescription">
+              <button class="ISButton" (click)="inService(unit.unit)">In Service</button>
+              <button class="OOSButton"(click)="outService(unit.unit)">Unavailable</button>
+            </div>
+          </div>
+        </div>
+
+        <div *ngIf="unit.status == 'Attached to Incident'">
+          <div class="UnitAttached">
+            <div class="UnitInServiceName">
+              {{unit.unit}}
+            </div>
+            <div class="UnitInServiceDescription">
+              Attached
+            </div>
+            <div class="UnitInServiceDescription">
+              <button class="attachmentButton">{{unit.attachment}} -></button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+  <div class="UnitSideBarOutServiceContainer">
+    <div class="UnitSideBarOutServiceHeader">
+      UNAVAILABLE UNITS
+    </div>
+
+    <div *ngFor="let unit of outServiceIndividual">
+
+      <div class="UnitSideBarOutServiceUnits">
+          <div class="UnitOutService">
+            <div class="UnitOutServiceName">
+              {{unit.unit}}
+            </div>
+            <div class="UnitOutServiceDescription">
+              Unavailable
+            </div>
+            <div class="UnitOutServiceDescription">
+              <button class="ISButton" (click)="inService(unit.unit)">Available</button>
+            </div>
+          </div>
+      </div>
+    </div>
+  </div>
+</div>

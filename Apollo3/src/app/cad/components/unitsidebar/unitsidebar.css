@@ -1,0 +1,186 @@
+.UnitSideBarContainer {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  position: relative;
+  width: 100%;
+  height: 100%;
+  padding: 5px;
+  padding-left: 10px;
+  direction: ltr;
+
+}
+
+
+.UnitSideBarInServiceContainer{
+
+}
+
+.UnitSideBarInServiceHeader {
+  text-align: center;
+  font-family: "Speeday";
+  font-size: 1.2em;
+  color: var(--ok-soft);
+  top: -5px;
+  overflow: clip;
+  text-shadow: 3px 5px 4px black;
+  align-content: center;
+  padding-bottom:2px;
+  margin-bottom:8px;
+  border-bottom: 1px solid var(--border);
+}
+
+.UnitSideBarInServiceUnits{
+
+}
+
+
+.UnitInService, .UnitBusy, .UnitAttached, .UnitOutService {
+  margin-bottom: 5px;
+  padding: 5px;
+  background-color: var(--panel-alt);
+  border: 1px solid var(--border);
+  border-radius: 7px;
+}
+
+
+.UnitInService {
+  border-left: 5px solid var(--ok);
+}
+
+  .UnitInService .UnitInServiceName {
+    color: var(--ok-soft);
+  }
+
+  .UnitInService .UnitInServiceDescription {
+    color: var(--ok-soft);
+  }
+
+.UnitBusy {
+  border-left: 5px solid var(--busy);
+}
+
+  .UnitBusy .UnitInServiceName {
+    color: var(--busy-soft);
+  }
+
+  .UnitBusy .UnitInServiceDescription {
+    color: var(--busy-soft);
+  }
+
+.UnitAttached {
+  border-left: 5px solid var(--attached);
+}
+
+  .UnitAttached .UnitInServiceName {
+    color: var(--attached-soft);
+    
+  }
+
+  .UnitAttached .UnitInServiceDescription {
+    color: var(--attached-soft);
+    
+  }
+
+button {
+  margin-top: 2px;
+  padding: 4px;
+  border-radius: 7px;
+  background-color: var(--panel-alt);
+  transition: color .25s, border-color .25s;
+  margin: 2px;
+}
+
+.ISButton {
+  color: var(--ok-soft);
+  border: 1px solid var(--ok-soft);
+}
+.OOSButton {
+  color: var(--alert-soft);
+  border: 1px solid var(--alert-soft);
+}
+.BusyButton {
+  color: var(--busy-soft);
+  border: 1px solid var(--busy-soft);
+}
+.attachmentButton {
+  color: var(--attached-soft);
+  border: 1px solid var(--attached-soft);
+}
+
+.ISButton:hover {
+  color: var(--ok);
+  border: 1px solid var(--ok);
+}
+
+.OOSButton:hover {
+  color: var(--alert);
+  border: 1px solid var(--alert);
+}
+
+.BusyButton:hover {
+  color: var(--busy);
+  border: 1px solid var(--busy);
+}
+
+.attachmentButton:hover {
+  color: var(--attached);
+  border: 1px solid var(--attached);
+}
+
+
+
+.logoutButton {
+  margin-top: 2px;
+  padding: 4px;
+  border-radius: 7px;
+  border: 1px solid var(--border);
+  background-color: var(--panel-alt);
+  color: var(--text-muted);
+  transition: color .25s, border-color .25s;
+}
+
+  .logoutButton:hover {
+    border-color: var(--text);
+    color: var(--text);
+  }
+
+
+.UnitSideBarOutServiceContainer{
+  margin-top: 10px
+}
+
+.UnitSideBarOutServiceHeader {
+  text-align: center;
+  font-family: "Speeday";
+  font-size: 1em;
+  color: var(--alert-soft);
+  top: -5px;
+  overflow: clip;
+  text-shadow: 3px 5px 4px black;
+  align-content: center;
+  padding-bottom: 2px;
+  margin-bottom: 8px;
+  border-bottom: 1px solid var(--border);
+}
+
+.UnitOutService {
+  border-left: 5px solid var(--alert);
+}
+
+  .UnitOutService .UnitOutServiceName {
+    color: var(--alert-soft);
+  }
+
+  .UnitOutService .UnitOutServiceDescription {
+    color: var(--alert-soft);
+  }
+
+
+.LoadingAlert {
+  display:flex;
+  flex: 1;
+  direction: ltr;
+  justify-content: center;
+  color: var(--busy);
+}

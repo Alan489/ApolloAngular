@@ -1,0 +1,88 @@
+.HeaderContainer {
+  position: relative;
+  left: 0;
+  right: 0;
+  display: flex;
+}
+
+.Header {
+  flex: 1;
+  display: inline-flex;
+  position: relative;
+  padding: 10px;
+  border: 1px solid var(--border);
+  overflow: clip;
+  background-color: var(--panel);
+  border-radius: 5px;
+}
+
+.HeaderLeft {
+  overflow: clip;
+  align-content: center;
+  position: relative;
+  float: left;
+  width: 33%;
+  color: var(--text-muted);
+  line-height: 1em;
+  flex-wrap: nowrap;
+  text-shadow: 1px 1px 2px black;
+  white-space: nowrap;
+}
+
+  .HeaderLeft span {
+    overflow: clip;
+    font-size: .6em;
+  }
+
+.HeaderMiddle {
+  position: relative;
+  text-align: center;
+  width: max(33%,500px);
+  font-family: "Speeday";
+  font-size: 30px;
+  color: var(--text-muted);
+  top: -5px;
+  overflow: clip;
+  text-shadow: 3px 5px 4px black;
+  align-content: center;
+}
+
+.HeaderRight {
+  text-align: right;
+  position: relative;
+  width: 34%;
+  padding-right: 15px;
+  color: var(--border);
+  align-content: center;
+}
+
+.HeaderClock {
+  position: relative;
+  float: right;
+  padding-right: 6px;
+  padding-left: 6px;
+  font-size: 30px;
+  color: var(--text-muted);
+  font-family: "Noto Sans Mono", monospace;
+  font-weight: bold;
+  align-content: center;
+  text-shadow: 3px 5px 4px black;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  background-color: var(--panel-alt);
+}
+
+.logoutButton {
+  margin-top: 2px;
+  padding: 4px;
+  border-radius: 7px;
+  border: 1px solid var(--border);
+  background-color: var(--panel-alt);
+  color: var(--text-muted);
+  transition: color .25s, border-color .25s;
+}
+
+.logoutButton:hover {
+  border-color: var(--text);
+  color: var(--text);
+}
