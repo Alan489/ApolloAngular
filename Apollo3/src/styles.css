@@ -15,11 +15,16 @@
   --panel-alt: #121f35;
   --border: #283752;
   --text: #eef4ff;
+  --text-muted: #274780;
   --muted: #9fb1d0;
   --ok: #6ea51d;
   --ok-soft: #ddf0bc;
   --alert: #9c2f3b;
   --alert-soft: #f8d3d9;
+  --attached: #c21089;
+  --attached-soft: #da84be;
+  --busy: #ff7c22;
+  --busy-soft: #b48d72;
   --shadow: 0 12px 36px rgba(0, 0, 0, 0.35);
 }
 

@@ -33,12 +33,13 @@
     height: 1.2em;
     border: 0px;
     color: var(--text);
+    padding: 3px;
+    border-radius: 5px;
   }
 
   *:focus {
     outline: none;
   }
-
 .formElement {
   margin-bottom: 7px;
 }

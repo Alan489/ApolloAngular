@@ -5,14 +5,6 @@
   <div class="boxBody">
     <div class="formElement">
       <div class="formLabel">
-        System Address
-      </div>
-      <div class="formInput">
-        <input type="text" placeholder="System Address" [(ngModel)]="sysadd" />
-      </div>
-    </div>
-    <div class="formElement">
-      <div class="formLabel">
         Username
       </div>
       <span class="formInput">
@@ -24,7 +16,7 @@
         Password
       </div>
       <span class="formInput">
-        <input type="password" placeholder="Password" [(ngModel)]="password" />
+        <input type="password" placeholder="Password" [(ngModel)]="password" (keydown.enter)="login()" />
       </span>
     </div>
     <div class="formElement">

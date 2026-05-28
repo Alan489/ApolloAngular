@@ -9,6 +9,8 @@ import { FormsModule } from '@angular/forms';
 
 import { DatePipe } from '@angular/common'
 
+//import { ConfigService } from './services/configservice'
+
 @NgModule({
   declarations: [
     AppComponent
@@ -17,7 +19,8 @@ import { DatePipe } from '@angular/common'
     BrowserModule,
     AppRoutingModule,
     HttpClientModule,
-    FormsModule
+    FormsModule,
+    //ConfigService
   ],
   providers: [DatePipe],
   bootstrap: [AppComponent]
