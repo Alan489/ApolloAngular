@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter, Input } from '@angular/core';
 import { ConfigService, AuthenticationService } from '../../../services';
 import { HttpClient } from '@angular/common/http';
 import { Session, UnitListing } from '../../../models';
@@ -16,38 +16,18 @@ export class UnitSideBarComponent implements OnInit {
 
   public loading: boolean = true;
   public deb: boolean = false;
-
-  public units: UnitListing[] = [];
+  @Input() units: UnitListing[] = [];
+  
 
   constructor(private config: ConfigService, private router: Router, public datepipe: DatePipe, private authService: AuthenticationService, private http: HttpClient)
   {
-    config.loadConfig().then(() => {
-      this.loadUnits();
-    });
-    setInterval(() => this.loadUnits(), 1000);
+    
   }
 
   ngOnInit(): void {
     
   }
 
-  loadUnits() {
-
-    if (this.deb) return;
-    this.deb = true;
-
-    this.http.post<UnitListing[]>(`https://${this.config.systemURL.trim()}/API/Units/Units/get/list`, this.authService.getSession()).subscribe(
-      (response) => {
-        this.units = response;
-        this.loading = false;
-        this.deb = false;
-      },
-      (error) => {
-        console.log(error);
-        this.deb = false;
-      }
-    );
-  }
 
   get inServiceIndividual() {
     return this.units.filter(u => u.type != 'Generic' && u.status != 'Out Of Service');
@@ -106,6 +86,13 @@ export class UnitSideBarComponent implements OnInit {
         console.log(error);
       }
     );
+  }
+
+  @Output() unitClicked = new EventEmitter<string>();
+
+  clicked(unit: string) {
+    console.log('clicky:' + unit);
+    this.unitClicked.emit(unit);
   }
 
 }

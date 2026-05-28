@@ -6,7 +6,7 @@
   <div class="BODY">
     <div *ngIf="state == 'Dashboard'" class="DASHBOARD">
       <div class="LEFT">
-        <unitsidebar></unitsidebar>
+        <unitsidebar (unitClicked)="unitClicked($event)" [units]="units"></unitsidebar>
 
       </div>
       <incidentsdashboard></incidentsdashboard>
