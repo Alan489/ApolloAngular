@@ -48,9 +48,8 @@ export class DashboardComponent {
           ts_arrival: x.ts_arrival ? new Date(x.ts_arrival) : null,
           ts_opened: x.ts_opened ? new Date(x.ts_opened) : null,
           ts_complete: x.ts_complete ? new Date(x.ts_complete) : null,
-          ts_dispatched: x.ts_dispatched ? new Date(x.ts_dispatched) : null
+          ts_dispatch: x.ts_dispatch ? new Date(x.ts_dispatch) : null
         }));
-        console.log(this.incidents);
         this.deb = false;
       },
       (error) => {
@@ -84,7 +83,6 @@ export class DashboardComponent {
   }
 
   unitClicked(unit: string) {
-    console.log("I got the unit clicked: " + unit);
     if (unit == '')
       this.state = 'Dashboard';
     else
@@ -92,11 +90,11 @@ export class DashboardComponent {
   }
 
   incidentClicked(inc: number) {
+
     if (inc < 0)
       this.state = 'Dashboard';
     else
       this.state = 'I' + inc;
-    console.log("I got the incident clicked: " + inc);
   }
 
   attachClicked(attach: string) {

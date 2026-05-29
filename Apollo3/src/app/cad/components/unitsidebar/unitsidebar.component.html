@@ -1,73 +1,93 @@
 <div class="UnitSideBarContainer">
-  <div class="UnitSideBarInServiceContainer">
-    <div class="UnitSideBarInServiceHeader">
-      AVAILABLE UNITS
-    </div>
-    <div class="UnitSideBarInServiceUnits">
+
+  <div class="searchy">
+    <input type="text" class="SearchBar" [(ngModel)]="search" placeholder="Filter Units" />
+    <button class="clearbutton" (click)="search=''">X</button>
+  </div>
+
+  <ng-container *ngIf="state == 'Dashboard'">
+    <div class="UnitSideBarInServiceContainer">
 
 
-      <div *ngFor="let unit of inServiceIndividual">
-
-        <!--Weeeeeee a comment!-->
-
-        <div *ngIf="unit.status == 'In Service'">
-          <div class="UnitInService" (click)="clicked(unit.unit)">
-            <div class="UnitInServiceName">
-              {{unit.unit}}
-            </div>
-            <div class="UnitInServiceDescription">
-              Available
-            </div>
-            <div class="UnitInServiceDescription">
-              <button class="BusyButton" (click)="busy(unit.unit); $event.stopPropagation()">Busy</button>
-              <button class="OOSButton"  (click)="outService(unit.unit); $event.stopPropagation()">Unavailable</button>
-            </div>
-          </div>
-        </div>
-
-        <div *ngIf="unit.status == 'Busy'">
-          <div class="UnitBusy" (click)="clicked(unit.unit)">
-            <div class="UnitInServiceName">
-              {{unit.unit}}
-            </div>
-            <div class="UnitInServiceDescription">
-              Busy
-            </div>
-            <div class="UnitInServiceDescription">
-              <button class="ISButton" (click)="inService(unit.unit); $event.stopPropagation()">In Service</button>
-              <button class="OOSButton"(click)="outService(unit.unit); $event.stopPropagation()">Unavailable</button>
-            </div>
-          </div>
-        </div>
-
-        <div *ngIf="unit.status == 'Attached to Incident'">
-          <div class="UnitAttached" (click)="clicked(unit.unit)">
-            <div class="UnitInServiceName">
-              {{unit.unit}}
-            </div>
-            <div class="UnitInServiceDescription">
-              Attached
-            </div>
-            <div class="UnitInServiceDescription">
-              <button class="attachmentButton">{{unit.attachment}} -></button>
-            </div>
-          </div>
-        </div>
+      <div class="UnitSideBarInServiceHeader">
+        AVAILABLE UNITS
       </div>
 
-    </div>
-  </div>
-  <div class="UnitSideBarOutServiceContainer">
-    <div class="UnitSideBarOutServiceHeader">
-      UNAVAILABLE UNITS
-    </div>
+      <div class="UnitSideBarInServiceUnits">
+        <div *ngFor="let unit of inServiceIndividual ; trackBy: trackUnit">
 
-    <div *ngFor="let unit of outServiceIndividual">
+          <!--Weeeeeee a comment!-->
 
-      <div class="UnitSideBarOutServiceUnits">
+          <div *ngIf="unit.status == 'In Service'">
+            <div class="UnitInService" (click)="clicked(unit.unit)">
+              <div class="UnitInServiceName">
+                {{unit.unit}}
+              </div>
+              <div class="UnitType" style="color:{{unit.color}}">
+                {{unit.role}}
+              </div>
+              <div class="UnitInServiceDescription">
+                Available
+              </div>
+              <div class="UnitInServiceDescription">
+                <button class="BusyButton" (click)="busy(unit.unit); $event.stopPropagation()">Busy</button>
+                <button class="OOSButton" (click)="outService(unit.unit); $event.stopPropagation()">Unavailable</button>
+              </div>
+            </div>
+          </div>
+
+          <div *ngIf="unit.status == 'Busy'">
+            <div class="UnitBusy" (click)="clicked(unit.unit)">
+              <div class="UnitInServiceName">
+                {{unit.unit}}
+              </div>
+              <div class="UnitType" style="color:{{unit.color}}">
+                {{unit.role}}
+              </div>
+              <div class="UnitInServiceDescription">
+                Busy
+              </div>
+              <div class="UnitInServiceDescription">
+                <button class="ISButton" (click)="inService(unit.unit); $event.stopPropagation()">In Service</button>
+                <button class="OOSButton" (click)="outService(unit.unit); $event.stopPropagation()">Unavailable</button>
+              </div>
+            </div>
+          </div>
+
+          <div *ngIf="unit.status == 'Attached to Incident'">
+            <div class="UnitAttached" (click)="clicked(unit.unit)">
+              <div class="UnitInServiceName">
+                {{unit.unit}}
+              </div>
+              <div class="UnitType" style="color:{{unit.color}}">
+                {{unit.role}}
+              </div>
+              <div class="UnitInServiceDescription">
+                Attached
+              </div>
+              <div class="UnitInServiceDescription">
+                <button class="attachmentButton" (click)="incident(unit.incID); $event.stopPropagation()">{{unit.attachment}} -></button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+    <div class="UnitSideBarOutServiceContainer">
+      <div class="UnitSideBarOutServiceHeader">
+        UNAVAILABLE UNITS
+      </div>
+
+      <div *ngFor="let unit of outServiceIndividual">
+
+        <div class="UnitSideBarOutServiceUnits">
           <div class="UnitOutService" (click)="clicked(unit.unit)">
             <div class="UnitOutServiceName">
               {{unit.unit}}
+            </div>
+            <div class="UnitType" style="color:{{unit.color}}">
+              {{unit.role}}
             </div>
             <div class="UnitOutServiceDescription">
               Unavailable
@@ -76,7 +96,141 @@
               <button class="ISButton" (click)="inService(unit.unit); $event.stopPropagation()">Available</button>
             </div>
           </div>
+        </div>
       </div>
     </div>
-  </div>
+  </ng-container>
+
+  <ng-container *ngIf="state.startsWith('I')">
+    <div class="UnitSideBarInServiceContainer">
+      <div class="UnitSideBarInServiceHeader">
+        AVAILABLE UNITS
+      </div>
+      <div class="UnitSideBarInServiceUnits">
+        <div *ngFor="let unit of availableUnits ; trackBy: trackUnit">
+          <div *ngIf="unit.status == 'In Service'">
+            <div class="UnitInService">
+              <div class="UnitInServiceName">
+                {{unit.unit}}
+              </div>
+              <div class="UnitType" style="color:{{unit.color}}">
+                {{unit.type}}
+              </div>
+              <div class="UnitInServiceDescription">
+                Available
+              </div>
+              <div class="UnitInServiceDescription">
+                <button class="attachmentButton" (click)="attach(unit.unit); $event.stopPropagation()">Attach -></button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="UnitSideBarInServiceHeader">
+        GENERIC UNITS
+      </div>
+      <div class="UnitSideBarInServiceUnits">
+        <div *ngFor="let unit of genericUnits ; trackBy: trackUnit">
+          <div *ngIf="unit.status == 'In Service'">
+            <div class="UnitInService">
+              <div class="UnitInServiceName">
+                {{unit.unit}}
+              </div>
+              <div class="UnitType" style="color:{{unit.color}}">
+                {{unit.role}}
+              </div>
+              <div class="UnitInServiceDescription">
+                <button class="attachmentButton" (click)="attach(unit.unit); $event.stopPropagation()">Attach -></button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+    <div class="UnitSideBarOutServiceContainer">
+      <div class="UnitSideBarOutServiceHeader">
+        UNAVAILABLE UNITS
+      </div>
+
+      <div *ngFor="let unit of busyUnits">
+
+
+
+
+        <div class="UnitSideBarOutServiceUnits">
+
+
+          <div *ngIf="unit.status == 'In Service'">
+            <div class="UnitInService">
+              <div class="UnitInServiceName">
+                {{unit.unit}}
+              </div>
+              <div class="UnitType" style="color:{{unit.color}}">
+                {{unit.role}}
+              </div>
+              <div class="UnitInServiceDescription">
+                Available
+              </div>
+              <div class="UnitInServiceDescription">
+                <button class="BusyButton" (click)="busy(unit.unit); $event.stopPropagation()">Busy</button>
+                <button class="OOSButton" (click)="outService(unit.unit); $event.stopPropagation()">Unavailable</button>
+              </div>
+            </div>
+          </div>
+
+          <div *ngIf="unit.status == 'Busy'">
+            <div class="UnitBusy">
+              <div class="UnitInServiceName">
+                {{unit.unit}}
+              </div>
+              <div class="UnitType" style="color:{{unit.color}}">
+                {{unit.role}}
+              </div>
+              <div class="UnitInServiceDescription">
+                Busy
+              </div>
+              <div class="UnitInServiceDescription">
+                <button class="ISButton" (click)="inService(unit.unit); $event.stopPropagation()">In Service</button>
+              </div>
+            </div>
+          </div>
+
+          <div *ngIf="unit.status == 'Attached to Incident'">
+            <div class="UnitAttached">
+              <div class="UnitInServiceName">
+                {{unit.unit}}
+              </div>
+              <div class="UnitType" style="color:{{unit.color}}">
+                {{unit.role}}
+              </div>
+              <div class="UnitInServiceDescription">
+                Attached to {{unit.attachment}}
+              </div>
+            </div>
+          </div>
+        </div>
+
+
+        <div class="UnitOutService" *ngIf="unit.status == 'Out Of Service'">
+          <div class="UnitOutServiceName">
+            {{unit.unit}}
+          </div>
+          <div class="UnitType" style="color:{{unit.color}}">
+            {{unit.role}}
+          </div>
+          <div class="UnitOutServiceDescription">
+            Unavailable
+          </div>
+          <div class="UnitOutServiceDescription">
+            <button class="ISButton" (click)="inService(unit.unit); $event.stopPropagation()">In Service</button>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </ng-container>
+
+
 </div>

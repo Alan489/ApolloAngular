@@ -14,7 +14,7 @@
     </div>
     <div *ngIf="state.startsWith('I')" class="DASHBOARD">
       <div class="RIGHTNoScroll">
-        <incidentedit [incident]="incident"></incidentedit>
+        <incidentedit [incident]="incident" (incidentClicked)="incidentClicked($event)"></incidentedit>
       </div>
     </div>
   </div>

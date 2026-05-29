@@ -17,7 +17,7 @@ export interface IncidentInformation {
   ts_arrival: Date | null;
   ts_opened: Date | null;
   ts_complete: Date | null;
-  ts_dispatched: Date | null;
+  ts_dispatch: Date | null;
   unit_number: string | null;
   updated: Date;
 }

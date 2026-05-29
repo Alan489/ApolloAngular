@@ -1,0 +1,191 @@
+.IncidentEditContainer {
+  padding: 10px;
+  display: flex;
+  flex: 1;
+  direction: ltr;
+  flex-direction: column;
+}
+
+.Header{
+  display: flex;
+}
+
+.HeaderNumber {
+  font-size: 2em;
+  text-shadow: 3px 5px 4px black;
+  flex: 1;
+}
+
+
+
+button {
+  margin-top: 2px;
+  padding: 4px;
+  border-radius: 7px;
+  background-color: var(--panel-alt);
+  transition: color .25s, border-color .25s;
+  margin: 2px;
+}
+
+.SaveButton {
+  color: var(--ok-soft);
+  border: 1px solid var(--ok-soft);
+}
+
+.ForceSaveButton {
+  color: var(--ok-soft);
+  border: 1px solid var(--ok-soft);
+}
+  .ForceSaveButton:hover {
+    color: var(--alert);
+    border: 1px solid var(--alert);
+  }
+
+.DiscardButton {
+  color: var(--alert-soft);
+  border: 1px solid var(--alert-soft);
+}
+
+.SaveButton:hover {
+  color: var(--ok);
+  border: 1px solid var(--ok);
+}
+
+.DiscardButton:hover {
+  color: var(--alert);
+  border: 1px solid var(--alert);
+}
+
+*:focus {
+  outline: none;
+}
+
+.InformationContainer{
+  display: flex;
+
+}
+
+.dualField {
+  width: 100%;
+  display: flex;
+  flex-direction:column;
+}
+  .dualField .checkAddressButton {
+
+
+  }
+
+.checkAddressButtonDisabled {
+  margin-top: 4px;
+  padding: 4px;
+  border-radius: 7px;
+  border: 1px solid var(--border);
+  background-color: var(--panel-alt);
+  color: var(--text-muted);
+  transition: color .25s, border-color .25s;
+}
+
+.checkAddressButton {
+  margin-top: 4px;
+  padding: 4px;
+  border-radius: 7px;
+  border: 1px solid var(--border);
+  background-color: var(--panel-alt);
+  color: var(--text-muted);
+  transition: color .25s, border-color .25s;
+}
+
+  .checkAddressButton:hover {
+    border-color: var(--text);
+    color: var(--text);
+  }
+
+
+  .leftInfo, .centerInfo, .rightInfo {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    background-color: var(--panel-alt);
+    padding: 8px;
+    border: 1px solid var(--border);
+    border-radius: 5px;
+  }
+
+  .centerInfo{
+    margin-left: 20px;
+    margin-right: 20px;
+  }
+
+  .labeledTextField {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 5px;
+  }
+
+.textFieldLabel{
+  margin-bottom: -2px;
+}
+
+
+input, select {
+  display: flex;
+  border-radius: 7px;
+  color: var(--text);
+  background-color: var(--panel-alt);
+  border: 1px solid var(--border);
+  height: 1.5em;
+}
+
+select {
+  scrollbar-width: thin;
+  scrollbar-color: var(--border) var(--panel);
+}
+
+  select::-webkit-scrollbar {
+    width: 14px;
+    height: 14px;
+  }
+
+  select::-webkit-scrollbar-track {
+    border: none;
+    background-color: var(--panel);
+  }
+
+  select::-webkit-scrollbar-thumb {
+    background-color: var(--border); border: none;
+  }
+
+  .alert {
+    border: 1px solid var(--alert)!important;
+  }
+.warn {
+  border: 1px solid var(--busy);
+}
+
+.timeHolder{
+
+}
+
+.timeModule {
+  display: flex;
+  margin-bottom: 10px;
+}
+
+.timeLabel{
+  flex: 1;
+}
+
+.timeDisplay {
+
+  float: right;
+  padding-right: 6px;
+  padding-left: 6px;
+  color: var(--text-muted);
+  font-family: "Noto Sans Mono", monospace;
+  font-weight: bold;
+  align-content: center;
+  text-shadow: 2px 3px 4px black;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  background-color: var(--panel-alt);
+}

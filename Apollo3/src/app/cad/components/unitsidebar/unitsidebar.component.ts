@@ -4,19 +4,27 @@ import { HttpClient } from '@angular/common/http';
 import { Session, UnitListing } from '../../../models';
 import { Router } from '@angular/router';
 import { DatePipe, CommonModule } from '@angular/common'
+import { FormsModule } from '@angular/forms';
 
 @Component({
   templateUrl: 'unitsidebar.component.html',
   styleUrls: ['./unitsidebar.css'],
   selector: 'unitsidebar',
   standalone: true,
-  imports: [CommonModule]
+  imports: [CommonModule, FormsModule]
 })
 export class UnitSideBarComponent implements OnInit {
 
   public loading: boolean = true;
   public deb: boolean = false;
+  public search: string = '';
+
   @Input() units: UnitListing[] = [];
+  @Input() state: string = '';
+
+  @Output() unitClicked = new EventEmitter<string>();
+  @Output() incidentClicked = new EventEmitter<number>();
+  @Output() attachClicked = new EventEmitter<string>();
   
 
   constructor(private config: ConfigService, private router: Router, public datepipe: DatePipe, private authService: AuthenticationService, private http: HttpClient)
@@ -28,13 +36,28 @@ export class UnitSideBarComponent implements OnInit {
     
   }
 
+  trackUnit(index: number, item: any) {
+    return item.id;
+  }
+
+  get busyUnits() {
+    return this.units.filter(u => u.type != 'Generic' && u.status != 'In Service' && !(this.search != '' && !u.unit.toLowerCase().includes(this.search.toLowerCase())));
+  }
+
+  get availableUnits() {
+    return this.units.filter(u => u.type != 'Generic' && u.status == 'In Service' && !(this.search != '' && !u.unit.toLowerCase().includes(this.search.toLowerCase())));
+  }
+
+  get genericUnits() {
+    return this.units.filter(u => u.type == 'Generic' && !(this.search != '' && !u.unit.toLowerCase().includes(this.search.toLowerCase())));
+  }
 
   get inServiceIndividual() {
-    return this.units.filter(u => u.type != 'Generic' && u.status != 'Out Of Service');
+    return this.units.filter(u => u.type != 'Generic' && u.status != 'Out Of Service' && !(this.search != '' && !u.unit.toLowerCase().includes(this.search.toLowerCase())));
   }
 
   get outServiceIndividual() {
-    return this.units.filter(u => u.type != 'Generic' && u.status == 'Out Of Service');
+    return this.units.filter(u => u.type != 'Generic' && u.status == 'Out Of Service' && !(this.search != '' && !u.unit.toLowerCase().includes(this.search.toLowerCase())));
   }
 
   outService(unit: string) {
@@ -88,11 +111,19 @@ export class UnitSideBarComponent implements OnInit {
     );
   }
 
-  @Output() unitClicked = new EventEmitter<string>();
-
   clicked(unit: string) {
-    console.log('clicky:' + unit);
+    this.search = '';
     this.unitClicked.emit(unit);
+  }
+
+  attach(unit: string) {
+    this.search = '';
+    this.attachClicked.emit(unit);
+  }
+
+  incident(incID: number) {
+    this.search = '';
+    this.incidentClicked.emit(incID);
   }
 
 }
