@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { AuthenticationService, ConfigService } from '../services';
 import { Session, UnitListing, IncidentInformation } from '../models';
-import { HeaderComponent, UnitSideBarComponent, IncidentsDashboardComponent, IncidentEditComponent, NewIncidentComponent } from './components';
+import { HeaderComponent, UnitSideBarComponent, IncidentsDashboardComponent, IncidentEditComponent, NewIncidentComponent, UnitEditComponent } from './components';
 import { CommonModule } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
 import { Subject } from 'rxjs';
@@ -15,7 +15,7 @@ interface IncResponse {
 @Component({
   templateUrl: 'dashboard.component.html',
   standalone: true,
-  imports: [HeaderComponent, CommonModule, UnitSideBarComponent, IncidentsDashboardComponent, IncidentEditComponent, NewIncidentComponent],
+  imports: [HeaderComponent, CommonModule, UnitSideBarComponent, IncidentsDashboardComponent, IncidentEditComponent, NewIncidentComponent, UnitEditComponent],
   styleUrls: ['./dashboard.css']
 })
 export class DashboardComponent {
@@ -118,6 +118,12 @@ export class DashboardComponent {
 
       
     }
+  }
+
+  get unit(): UnitListing | null {
+    if (this.state.startsWith('U'))
+      return this.units.find(u => u.unit == this.state.substring(1)) ?? null
+    return null;
   }
 
 }

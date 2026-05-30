@@ -274,6 +274,25 @@ export class IncidentEditComponent implements OnInit {
     );
   }
 
+  googleTheAddress() {
+    if (this.currIncident == null) return;
+   
+
+    this.http.post<any>(`https://maps.googleapis.com/maps/api/geocode/json?key=${this.authService.getSession()?.googleLink}&address=${this.currIncident.location}`, null).subscribe(
+      (response) => {
+        if (response.results && (response.results as any[]).length == 1 && this.currIncident) {
+          this.currIncident.location = (response.results[0].formatted_address as string).replace(', USA', '');
+          this.changed('location');
+          this.currIncident.lat = response.results[0].geometry.location.lat
+          this.currIncident.log = response.results[0].geometry.location.lng
+        }
+      },
+      (error) => {
+        console.log(error);
+      }
+    );
+  }
+
   save() {
     //https://localhost:7208/API/Incidents/Incidents/post/save
 
@@ -315,11 +334,13 @@ export class IncidentEditComponent implements OnInit {
       session: this.authService.getSession() as Session,
       incident: this.currIncident as IncidentInformation
     }
-    this.http.post(`https://${this.config.systemURL.trim()}/API/Incidents/Incidents/post/save`, sir).subscribe(
+    this.http.post<string>(`https://${this.config.systemURL.trim()}/API/Incidents/Incidents/post/save`, sir).subscribe(
       (response) => {
         this.incidentClicked.emit(-1);
+        console.log('???');
       },
       (error) => {
+        this.incidentClicked.emit(-1);
         console.log(error);
       }
     );

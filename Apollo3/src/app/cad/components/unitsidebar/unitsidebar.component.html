@@ -5,7 +5,7 @@
     <button class="clearbutton" (click)="search=''">X</button>
   </div>
 
-  <ng-container *ngIf="state == 'Dashboard'">
+  <ng-container *ngIf="state == 'Dashboard' || state.startsWith('U')">
     <div class="UnitSideBarInServiceContainer">
 
 

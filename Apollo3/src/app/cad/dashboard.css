@@ -62,7 +62,7 @@ incidentsdashboard {
   flex: 1;
 }
 
-incidentedit, newincident {
+incidentedit, newincident, unitedit {
   display: flex;
   flex: 1;
   border: 1px solid var(--border);

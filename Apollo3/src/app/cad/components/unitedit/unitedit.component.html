@@ -1,0 +1,38 @@
+<div class="UnitEditContainer">
+
+  <div class="UnitEditHeader" *ngIf="unitListing != null && unitListing.unit != null">
+
+    <div class="UnitEditHeaderText">
+      {{unitListing?.unit}}
+    </div>
+
+    <div class="Controls">
+      <button class="DiscardButton" (click)="close()">
+        Close
+      </button>
+      <button class="SaveButton" *ngIf="!isAttached" (click)="saveUnit()">
+        Save
+      </button>
+    </div>
+
+  </div>
+  
+  <div class="EditOptions">
+    <div class="PersonnelInput">
+      <div class="PersonnelHeader">
+        Unit Notes
+      </div>
+      <textarea type="text" [(ngModel)]="personnel"> </textarea>
+    </div>
+
+    <div class="RoleInput">
+      <div class="RoleHeader">
+        Unit Role
+      </div>
+      <select [(ngModel)]="role">
+        <option *ngFor="let roleOpt of roles" [value]="roleOpt">{{roleOpt}}</option>
+      </select>
+    </div>
+    
+  </div>
+</div>

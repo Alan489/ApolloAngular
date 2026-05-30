@@ -1,0 +1,123 @@
+.UnitEditContainer
+{
+  flex: 1;
+  display:flex;
+  flex-direction:column;
+  padding: 5px;
+  
+}
+
+.UnitEditHeader {
+  display: flex;
+  font-size: 2em;
+  text-shadow: 3px 3px 3px black;
+  flex-direction: row;
+  
+}
+
+.UnitEditHeaderText {
+  display: flex;
+  flex: 1;
+}
+
+.EditOptions{
+  flex:1;
+  display: flex;
+  flex-direction:column;
+}
+
+.PersonnelInput{
+  margin-top: 10px;
+  margin-bottom: 10px;
+  width: 100%;
+}
+.RoleInput{
+  
+}
+
+.Controls {
+  align-items: center;
+}
+
+textarea {
+  display: flex;
+  border-radius: 7px;
+  color: var(--text);
+  background-color: var(--panel-alt);
+  border: 1px solid var(--border);
+  width: 100%;
+  height: 10em;
+}
+
+input, select {
+  display: flex;
+  border-radius: 7px;
+  color: var(--text);
+  background-color: var(--panel-alt);
+  border: 1px solid var(--border);
+  height: 1.5em;
+  width: 100%;
+}
+
+select, textarea {
+  scrollbar-width: thin;
+  scrollbar-color: var(--border) var(--panel);
+}
+
+  select::-webkit-scrollbar, textarea::-webkit-scrollbar {
+    width: 14px;
+    height: 14px;
+  }
+
+  select::-webkit-scrollbar-track, textarea::-webkit-scrollbar-track {
+    border: none;
+    background-color: var(--panel);
+  }
+
+  select::-webkit-scrollbar-thumb, textarea::-webkit-scrollbar-thumb {
+    background-color: var(--border);
+    border: none;
+  }
+
+button {
+  margin-top: 2px;
+  padding: 4px;
+  border-radius: 7px;
+  background-color: var(--panel-alt);
+  transition: color .25s, border-color .25s;
+  margin: 2px;
+}
+
+.SaveButton {
+  color: var(--ok-soft);
+  border: 1px solid var(--ok-soft);
+}
+
+.ForceSaveButton {
+  color: var(--ok-soft);
+  border: 1px solid var(--ok-soft);
+}
+
+  .ForceSaveButton:hover {
+    color: var(--alert);
+    border: 1px solid var(--alert);
+  }
+
+.DiscardButton {
+  color: var(--alert-soft);
+  border: 1px solid var(--alert-soft);
+}
+
+.SaveButton:hover {
+  color: var(--ok);
+  border: 1px solid var(--ok);
+}
+
+.DiscardButton:hover {
+  color: var(--alert);
+  border: 1px solid var(--alert);
+}
+
+*:focus {
+  outline: none;
+}

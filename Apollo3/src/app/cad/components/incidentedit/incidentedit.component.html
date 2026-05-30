@@ -8,7 +8,7 @@
       <button class="DiscardButton" (click)="close()" *ngIf="!hasChanges">Close</button>
       <button class="DiscardButton" (click)="close()" *ngIf="hasChanges">Discard and Close</button>
       <button class="SaveButton" (click)="save()" *ngIf="hasChanges && !hasOverwrites">Save</button>
-      <button class="SaveButton" *ngIf="hasChanges && !hasOverwrites">Save and Close</button>
+      <button class="SaveButton" *ngIf="hasChanges && !hasOverwrites" (click)="saveClose()">Save and Close</button>
       <button class="ForceSaveButton" (click)="forceSave()" *ngIf="hasChanges && hasOverwrites">Force Save</button>
     </div>
   </div>
@@ -29,7 +29,7 @@
         </div>
         <div class="dualField">
           <input class="textField" type="text" [disabled]="isDispositioned" (input)="changed('location')" [(ngModel)]="currIncident.location" [ngClass]="{'warn': isChanged('location'),'alert': irreconcilable('location')}" />
-          <button [disabled]="isDispositioned" [ngClass]="{'checkAddressButton': !isDispositioned,'checkAddressButtonDisabled': isDispositioned}">Validate Address</button>
+          <button (click)="googleTheAddress()" [disabled]="isDispositioned" [ngClass]="{'checkAddressButton': !isDispositioned,'checkAddressButtonDisabled': isDispositioned}">Validate Address</button>
         </div>
       </div>
 
