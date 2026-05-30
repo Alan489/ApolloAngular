@@ -67,7 +67,6 @@ export class NewIncidentComponent implements OnInit {
   googleTheAddress() {
     if (this.currIncident == null) return;
 
-
     this.http.post<any>(`https://maps.googleapis.com/maps/api/geocode/json?key=${this.authService.getSession()?.googleLink}&address=${this.currIncident.location}`, null).subscribe(
       (response) => {
         if (response.results && (response.results as any[]).length == 1 && this.currIncident) {
