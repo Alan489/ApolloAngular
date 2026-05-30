@@ -33,6 +33,22 @@
 .UnitSideBarInServiceUnits{
 
 }
+.newUnit {
+  margin-top: 2px;
+  padding: 4px;
+  border-radius: 7px;
+  border: 1px solid var(--border);
+  background-color: var(--panel-alt);
+  color: var(--text-muted);
+  transition: color .25s, border-color .25s;
+  width: 100%;
+  margin-bottom: 10px;
+}
+
+  .newUnit:hover {
+    border-color: var(--text);
+    color: var(--text);
+  }
 
 
 .UnitInService, .UnitBusy, .UnitAttached, .UnitOutService {

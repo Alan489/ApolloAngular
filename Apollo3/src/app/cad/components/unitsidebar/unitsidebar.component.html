@@ -8,6 +8,7 @@
   <ng-container *ngIf="state == 'Dashboard' || state.startsWith('U')">
     <div class="UnitSideBarInServiceContainer">
 
+      <button (click)="clicked('!-New')" class="newUnit" *ngIf="state == 'Dashboard'">New Unit</button>
 
       <div class="UnitSideBarInServiceHeader">
         AVAILABLE UNITS

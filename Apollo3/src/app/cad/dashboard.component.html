@@ -21,6 +21,19 @@
       </div>
     </ng-container>
 
+    <ng-container *ngIf="state == 'NewUnit'">
+      <div class="LEFT">
+        <div class="spacetaker">
+          Save Unit to Continue
+        </div>
+      </div>
+      <div class="DASHBOARD">
+        <div class="RIGHTNoScroll">
+          <newunit (unitClicked)="unitClicked($event)"></newunit>
+        </div>
+      </div>
+    </ng-container>
+
 
 
     <div *ngIf="state == 'Dashboard'" class="DASHBOARD">

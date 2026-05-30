@@ -4,3 +4,4 @@ export * from './incidentsdashboard/incidentsdashboard.component';
 export * from './incidentedit/incidentedit.component';
 export * from './newincident/newincident.component';
 export * from './unitedit/unitedit.component';
+export * from './newunit/newunit.component';

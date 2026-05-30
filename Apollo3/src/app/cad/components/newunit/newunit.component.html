@@ -1,0 +1,56 @@
+<div class="UnitEditContainer">
+
+  <div class="UnitEditHeader">
+
+    <div class="UnitEditHeaderText">
+      New Unit
+    </div>
+
+    <div class="Controls">
+      <button class="DiscardButton" (click)="close()">
+        Close
+      </button>
+      <button class="SaveButton" (click)="saveUnit()">
+        Save
+      </button>
+    </div>
+
+  </div>
+  
+  <div class="EditOptions">
+
+    <div class="UnitCallsign">
+      <div class="PersonnelHeader">
+        Callsign
+      </div>
+      <input type="text" [(ngModel)]="unit" />
+    </div>
+
+    <div class="UnitType">
+      <div class="PersonnelHeader">
+        Unit Type
+      </div>
+      <select [(ngModel)]="type">
+        <option value="Unit">Unit</option>
+        <option value="Generic">Generic</option>
+      </select>
+    </div>
+
+    <div class="PersonnelInput">
+      <div class="PersonnelHeader">
+        Unit Notes
+      </div>
+      <textarea type="text" [(ngModel)]="personnel"> </textarea>
+    </div>
+
+    <div class="RoleInput">
+      <div class="RoleHeader">
+        Unit Role
+      </div>
+      <select [(ngModel)]="role">
+        <option *ngFor="let roleOpt of roles" [value]="roleOpt">{{roleOpt}}</option>
+      </select>
+    </div>
+
+  </div>
+</div>

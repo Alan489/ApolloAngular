@@ -76,6 +76,7 @@ export class IncidentEditComponent implements OnInit {
 
     this.refreshTokenUnits = setInterval(() => this.getUnits(), 1000);
     this.refreshTokenNotes = setInterval(() => this.getNotes(), 1000);
+    window.addEventListener('keydown', this.keyDownHandler);
   }
 
   oi(inc: number) {
@@ -168,6 +169,38 @@ export class IncidentEditComponent implements OnInit {
     clearInterval(this.refreshTokenNotes);
     clearInterval(this.refreshTokenUnits);
     this.attachSubscription.unsubscribe();
+    window.removeEventListener('keydown', this.keyDownHandler);
+  }
+
+  //window.addEventListener('keydown', this.keyDownHandler);
+  //window.removeEventListener('keydown', this.keyDownHandler);
+  private keyDownHandler = (e: KeyboardEvent) => this.handleKeyDown(e);
+
+  handleKeyDown(event: KeyboardEvent): void {
+    const isModifierPressed = event.ctrlKey || event.metaKey;
+
+    if (isModifierPressed && event.key.toLowerCase() === 'd') {
+      event.preventDefault();
+      const inputElement = document.querySelector('#loginput') as HTMLInputElement | null;
+      if (inputElement) {
+        inputElement.focus();
+      }
+    }
+
+    if (isModifierPressed && event.key.toLowerCase() === 'g') {
+      event.preventDefault();
+      this.googleTheAddress();
+    }
+
+
+    if (isModifierPressed && event.key.toLowerCase() === 's') {
+      event.preventDefault();
+      if (this.hasChanges)
+        if (this.hasOverwrites)
+          this.forceSave()
+        else
+          this.save()
+    }
   }
 
   attach(unit: string) {

@@ -29,7 +29,7 @@
         </div>
         <div class="dualField">
           <input class="textField" type="text" [disabled]="isDispositioned" (input)="changed('location')" [(ngModel)]="currIncident.location" [ngClass]="{'warn': isChanged('location'),'alert': irreconcilable('location')}" />
-          <button (click)="googleTheAddress()" [disabled]="isDispositioned" [ngClass]="{'checkAddressButton': !isDispositioned,'checkAddressButtonDisabled': isDispositioned}">Validate Address</button>
+          <button (click)="googleTheAddress()" [disabled]="isDispositioned" [ngClass]="{'checkAddressButton': !isDispositioned,'checkAddressButtonDisabled': isDispositioned}" tabindex="-1">Validate Address (CTRL+G)</button>
         </div>
       </div>
 
@@ -68,7 +68,7 @@
           Call Type
         </div>
         <ng-container *ngIf="currIncident">
-          <select [disabled]="isDispositioned" (input)="changed('call_type', $event)" [(ngModel)]="currIncident.call_type" [ngClass]="{'warn': isChanged('call_type'),'alert': irreconcilable('call_type')}">
+          <select [disabled]="isDispositioned" tabindex="-1" (input)="changed('call_type', $event)" [(ngModel)]="currIncident.call_type" [ngClass]="{'warn': isChanged('call_type'),'alert': irreconcilable('call_type')}">
             <option [ngValue]="null">Not Selected</option>
             <option *ngFor="let type of incTypes" [value]="type">
               {{ type }}
@@ -126,7 +126,7 @@
           Disposition
         </div>
         <ng-container *ngIf="currIncident && attachedUnits.length == 0">
-          <select [disabled]="isDispositioned && (incident?.disposition != null && incident?.disposition != '')" (input)="changed('disposition', $event)" [(ngModel)]="currIncident.disposition" [ngClass]="{'warn': isChanged('disposition'),'alert': irreconcilable('disposition')}">
+          <select tabindex="-1" [disabled]="isDispositioned && (incident?.disposition != null && incident?.disposition != '')" (input)="changed('disposition', $event)" [(ngModel)]="currIncident.disposition" [ngClass]="{'warn': isChanged('disposition'),'alert': irreconcilable('disposition')}">
             <option [ngValue]="null">Not Selected</option>
             <option *ngFor="let type of dispTypes" [value]="type">
               {{ type }}
@@ -151,7 +151,7 @@
             Incident Log
           </div>
           <div class="NotesForm" *ngIf="!isDispositioned">
-            <input type="text" [(ngModel)]="noteInput" (keydown.enter)="postMessage()" />
+            <input type="text" [(ngModel)]="noteInput" (keydown.enter)="postMessage()" placeholder="Click here or press CTRL+D" id="loginput"/>
             <button class="NotesSubmit" (click)="postMessage()">POST</button>
           </div>
           <div *ngIf="!isDispositioned && noteInput.startsWith('/')" class="autoCompleteContainer">
@@ -295,6 +295,7 @@
         </div>
       </div>
     </div>
+  </div>
   </div>
   
 

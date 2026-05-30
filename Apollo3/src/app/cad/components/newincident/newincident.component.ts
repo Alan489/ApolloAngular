@@ -28,6 +28,7 @@ export class NewIncidentComponent implements OnInit {
   @Output() incidentClicked = new EventEmitter<number>();
 
   public incTypes: string[] = [];
+  private deb: boolean = false;
 
 
 
@@ -42,6 +43,7 @@ export class NewIncidentComponent implements OnInit {
 
   ngOnInit(): void {
     this.getincTypes();
+    window.addEventListener('keydown', this.keyDownHandler);
   }
 
 
@@ -51,6 +53,7 @@ export class NewIncidentComponent implements OnInit {
   }
 
   ngOnDestroy() {
+    window.removeEventListener('keydown', this.keyDownHandler);
   }
 
   getincTypes() {
@@ -81,10 +84,32 @@ export class NewIncidentComponent implements OnInit {
     );
   }
 
+  //window.addEventListener('keydown', this.keyDownHandler);
+  //window.removeEventListener('keydown', this.keyDownHandler);
+  private keyDownHandler = (e: KeyboardEvent) => this.handleKeyDown(e);
+
+  handleKeyDown(event: KeyboardEvent): void {
+    const isModifierPressed = event.ctrlKey || event.metaKey;
+
+    if (isModifierPressed && event.key.toLowerCase() === 'g') {
+      event.preventDefault();
+      this.googleTheAddress();
+    }
+
+
+    if (isModifierPressed && event.key.toLowerCase() === 's') {
+      event.preventDefault();
+      this.save()
+    }
+  }
+
 
   save() {
     //https://localhost:7208/API/Incidents/Incidents/post/save
     //https://localhost:7208/API/Incidents/Incidents/post/new
+
+    if (this.deb) return;
+    this.deb = true;
 
     if (this.authService.getSession() == null) return;
 
@@ -102,29 +127,7 @@ export class NewIncidentComponent implements OnInit {
       },
       (error) => {
         console.log(error);
-      }
-    );
-  }
-
-  saveClose() {
-    //https://localhost:7208/API/Incidents/Incidents/post/save
-
-    if (this.authService.getSession() == null) return;
-
-    if (this.currIncident?.disposition != null && this.currIncident?.disposition != '') {
-      this.currIncident.ts_complete = new Date();
-    }
-
-    let sir: SaveIncidentRequest = {
-      session: this.authService.getSession() as Session,
-      incident: this.currIncident as IncidentInformation
-    }
-    this.http.post(`https://${this.config.systemURL.trim()}/API/Incidents/Incidents/post/save`, sir).subscribe(
-      (response) => {
-        this.incidentClicked.emit(-1);
-      },
-      (error) => {
-        console.log(error);
+        this.deb = false;
       }
     );
   }

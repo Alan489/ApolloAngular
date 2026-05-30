@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { AuthenticationService, ConfigService } from '../services';
 import { Session, UnitListing, IncidentInformation } from '../models';
-import { HeaderComponent, UnitSideBarComponent, IncidentsDashboardComponent, IncidentEditComponent, NewIncidentComponent, UnitEditComponent } from './components';
+import { HeaderComponent, UnitSideBarComponent, IncidentsDashboardComponent, IncidentEditComponent, NewIncidentComponent, UnitEditComponent, NewUnitComponent } from './components';
 import { CommonModule } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
 import { Subject } from 'rxjs';
@@ -15,7 +15,7 @@ interface IncResponse {
 @Component({
   templateUrl: 'dashboard.component.html',
   standalone: true,
-  imports: [HeaderComponent, CommonModule, UnitSideBarComponent, IncidentsDashboardComponent, IncidentEditComponent, NewIncidentComponent, UnitEditComponent],
+  imports: [HeaderComponent, CommonModule, UnitSideBarComponent, IncidentsDashboardComponent, IncidentEditComponent, NewIncidentComponent, UnitEditComponent, NewUnitComponent],
   styleUrls: ['./dashboard.css']
 })
 export class DashboardComponent {
@@ -27,7 +27,7 @@ export class DashboardComponent {
   public deb: boolean = false;
   public attachSubject: Subject<string> = new Subject<string>();
 
-
+  
 
   constructor(private config: ConfigService, private authService: AuthenticationService, private http: HttpClient)
   {
@@ -35,7 +35,9 @@ export class DashboardComponent {
       this.loadData();
     });
     setInterval(() => this.loadData(), 1000);
-    window.addEventListener('keydown', this.handleKeyDown);
+    console.log("cons")
+    window.addEventListener('keydown', this.keyDownHandler);
+    
   }
 
   loadData() {
@@ -86,6 +88,12 @@ export class DashboardComponent {
   }
 
   unitClicked(unit: string) {
+
+    if (unit == '!-New') {
+      this.state = 'NewUnit';
+      return;
+    }
+
     if (unit == '')
       this.state = 'Dashboard';
     else
@@ -109,14 +117,18 @@ export class DashboardComponent {
     this.attachSubject.next(attach);
   }
 
+
+  //window.addEventListener('keydown', this.keyDownHandler);
+  //window.removeEventListener('keydown', this.keyDownHandler);
+  private keyDownHandler = (e: KeyboardEvent) => this.handleKeyDown(e);
+
   handleKeyDown(event: KeyboardEvent): void {
     const isModifierPressed = event.ctrlKey || event.metaKey;
 
     
     if (isModifierPressed && event.key.toLowerCase() === 's') {
       event.preventDefault();
-
-      
+      console.log('Dashboard ^s');
     }
   }
 
