@@ -1,3 +1,86 @@
 {
-  "systemURL": "localhost:7208"
+  "systemURL": "localhost:7208",
+  "shorthands": {
+    "pan": "Panic Activated",
+    "saw": "Stage and Wait // Scene Unsafe",
+    "ss": "Scene Safe",
+    "nfi": "No Further Infomation",
+
+    "nua": "No Unit Available",
+
+    "naa": "No ALS Available",
+    "eals": "Predicted Extended ALS Wait/Response Time",
+    "mar": "Mutual Aid Requested",
+    "marc": "Mutual Aid Request Cancelled",
+    "bra": "BLS Request ALS",
+    "bca": "BLS Cancelled ALS",
+    "acb": "ALS Cancelled BLS",
+
+    "dptc": "Delayed Patient Contact",
+    "dptcd": "Delayed Patient Contact due to Lockout",
+    "dc": "Delayed Patient Care",
+    "dce": "Delayed Patient Care due to Extrication / Inaccessible",
+    "das": "Delated at Scene",
+
+    "pdcb": "Police Cancelled BLS",
+    "pdn": "Police Notified",
+    "pdu": "Police Department Notified for Urgent Response",
+    "pdr": "Police Department Notified for Routine Response",
+    "pdfe": "Police Department Notified for Forcible Entry",
+
+    "fdr": "Fire Department Requested",
+    "fdfe": "Fire Department Requested for Forcible Entry",
+    "fdo": "Fire Department Requested for Strange Odor",
+    "fdf": "Fire Department Requested for Fire",
+    "fde": "Fire Department Requested for Extrication",
+    "fdw": "Fire Department Requested for Water Condition",
+
+    "sup": "Supervisor Requested",
+    "supn": "Supervisor Notified",
+
+    "hn": "Hospital Notified",
+    "hnt": "Hospital Notified -- Trauma",
+    "hns": "Hospital Notified -- Security",
+    "hno": "Hospital Notified -- OBGYN",
+    "hnc": "Hospital Notified -- Cardiac",
+    "hncpr": "Hospital Notified -- CPR",
+    "hnb": "Hospital Notified -- Burn",
+    "hncs": "Hospital Notified -- Stroke",
+
+    "humc": "Transport 1 to Hoboken University Medical Center",
+    "jcmc": "Transport 1 to Jersey City Medical Center",
+    "hack": "Transport 1 to Hackensack University Medical Center",
+    "hrh": "Transport 1 to Hudson Regional Hospital",
+    "bay": "Transport 1 to Bayonne Medical Center",
+    "nuh": "Transport 1 to Newark University Hospital",
+    "stb": "Transport 1 to St. Barnabas Medical Center",
+    "pmc": "Transport 1 to Palisades Medical Center",
+
+    "humc2": "Transport 2 to Hoboken University Medical Center",
+    "jcmc2": "Transport 2 to Jersey City Medical Center",
+    "hack2": "Transport 2 to Hackensack University Medical Center",
+    "hrh2": "Transport 2 to Hudson Regional Hospital",
+    "bay2": "Transport 2 to Bayonne Medical Center",
+    "nuh2": "Transport 2 to Newark University Hospital",
+    "stb2": "Transport 2 to St. Barnabas Medical Center",
+    "pmc2": "Transport 2 to Palisades Medical Center",
+
+    "tpd": "Transport with Police Department Aboard",
+
+    "cva": "Code Stroke",
+    "cpr": "CPR in Progress",
+    "shk": "AED Shock",
+    "ros": "ROSC On Scene",
+    "rer": "ROSC E/R to ED",
+    "nlx": "Naloxone Deployed",
+    "epi": "Epinephrine Deployed",
+    "bd": "Baby Delivered",
+    "doa": "Deceased on Arrival. No BLS Intervention Attempted due to Obvious Death",
+    "ddnr": "Deceased on Arrival. No BLS Intervention Attempted due to DNR Order",
+    "dnr": "Known Patient DNR Order.",
+
+    "bari": "Bariatric Patient"
+
+
+  }
 }

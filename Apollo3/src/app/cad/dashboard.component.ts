@@ -1,9 +1,10 @@
 import { Component } from '@angular/core';
 import { AuthenticationService, ConfigService } from '../services';
 import { Session, UnitListing, IncidentInformation } from '../models';
-import { HeaderComponent, UnitSideBarComponent, IncidentsDashboardComponent, IncidentEditComponent } from './components';
+import { HeaderComponent, UnitSideBarComponent, IncidentsDashboardComponent, IncidentEditComponent, NewIncidentComponent } from './components';
 import { CommonModule } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
+import { Subject } from 'rxjs';
 
 interface IncResponse {
   errorMessage: Object;
@@ -14,7 +15,7 @@ interface IncResponse {
 @Component({
   templateUrl: 'dashboard.component.html',
   standalone: true,
-  imports: [HeaderComponent, CommonModule, UnitSideBarComponent, IncidentsDashboardComponent, IncidentEditComponent],
+  imports: [HeaderComponent, CommonModule, UnitSideBarComponent, IncidentsDashboardComponent, IncidentEditComponent, NewIncidentComponent],
   styleUrls: ['./dashboard.css']
 })
 export class DashboardComponent {
@@ -24,6 +25,7 @@ export class DashboardComponent {
   public incidents: IncidentInformation[] = [];
   public selectedIncident: IncidentInformation | null = null;
   public deb: boolean = false;
+  public attachSubject: Subject<string> = new Subject<string>();
 
 
 
@@ -33,6 +35,7 @@ export class DashboardComponent {
       this.loadData();
     });
     setInterval(() => this.loadData(), 1000);
+    window.addEventListener('keydown', this.handleKeyDown);
   }
 
   loadData() {
@@ -91,6 +94,11 @@ export class DashboardComponent {
 
   incidentClicked(inc: number) {
 
+    if (inc == -2) {
+      this.state = 'NewIncident';
+      return;
+    }
+
     if (inc < 0)
       this.state = 'Dashboard';
     else
@@ -98,7 +106,18 @@ export class DashboardComponent {
   }
 
   attachClicked(attach: string) {
-    console.log("I got the attach clicked: " + attach);
+    this.attachSubject.next(attach);
+  }
+
+  handleKeyDown(event: KeyboardEvent): void {
+    const isModifierPressed = event.ctrlKey || event.metaKey;
+
+    
+    if (isModifierPressed && event.key.toLowerCase() === 's') {
+      event.preventDefault();
+
+      
+    }
   }
 
 }

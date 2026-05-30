@@ -114,7 +114,7 @@
                 {{unit.unit}}
               </div>
               <div class="UnitType" style="color:{{unit.color}}">
-                {{unit.type}}
+                {{unit.role}}
               </div>
               <div class="UnitInServiceDescription">
                 Available
@@ -131,8 +131,8 @@
         GENERIC UNITS
       </div>
       <div class="UnitSideBarInServiceUnits">
-        <div *ngFor="let unit of genericUnits ; trackBy: trackUnit">
-          <div *ngIf="unit.status == 'In Service'">
+        <div *ngFor="let unit of genericUnits; trackBy: trackUnit">
+          <div *ngIf="true">
             <div class="UnitInService">
               <div class="UnitInServiceName">
                 {{unit.unit}}

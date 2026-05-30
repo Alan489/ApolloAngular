@@ -4,20 +4,36 @@
   </div>
 
   <div class="BODY">
-    <div class="LEFT">
+    <div class="LEFT" *ngIf="state.startsWith('I') || state == 'Dashboard'">
       <unitsidebar (unitClicked)="unitClicked($event)" (incidentClicked)="incidentClicked($event)" (attachClicked)="attachClicked($event)" [units]="units" [state]="state"></unitsidebar>
     </div>
-    <div *ngIf="state == 'Dashboard'" class="DASHBOARD">
-      <div class="RIGHT">
-        <incidentsdashboard [incidents]="incidents" (incidentClicked)="incidentClicked($event)"></incidentsdashboard>
+
+    <ng-container *ngIf="state == 'NewIncident'">
+        <div class="LEFT">
+          <div class="spacetaker">
+            Save Incident to View Units
+          </div>
+        </div>
+      <div class="DASHBOARD">
+        <div class="RIGHTNoScroll">
+          <newincident (incidentClicked)="incidentClicked($event)"></newincident>
+        </div>
+      </div>
+    </ng-container>
+
+    
+
+      <div *ngIf="state == 'Dashboard'" class="DASHBOARD">
+        <div class="RIGHT">
+          <incidentsdashboard [incidents]="incidents" (incidentClicked)="incidentClicked($event)"></incidentsdashboard>
+        </div>
+      </div>
+      <div *ngIf="state.startsWith('I')" class="DASHBOARD">
+        <div class="RIGHTNoScroll">
+          <incidentedit [incident]="incident" (incidentClicked)="incidentClicked($event)" [attachSubject]="attachSubject.asObservable()"></incidentedit>
+        </div>
       </div>
     </div>
-    <div *ngIf="state.startsWith('I')" class="DASHBOARD">
-      <div class="RIGHTNoScroll">
-        <incidentedit [incident]="incident" (incidentClicked)="incidentClicked($event)"></incidentedit>
-      </div>
-    </div>
-  </div>
 
 </div>
 

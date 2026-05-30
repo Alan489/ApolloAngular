@@ -6,10 +6,10 @@
     </div>
     <div class="HeaderControls">
       <button class="DiscardButton" (click)="close()" *ngIf="!hasChanges">Close</button>
-      <button class="DiscardButton" *ngIf="hasChanges">Discard</button>
-      <button class="SaveButton" *ngIf="hasChanges && !hasOverwrites">Save</button>
+      <button class="DiscardButton" (click)="close()" *ngIf="hasChanges">Discard and Close</button>
+      <button class="SaveButton" (click)="save()" *ngIf="hasChanges && !hasOverwrites">Save</button>
       <button class="SaveButton" *ngIf="hasChanges && !hasOverwrites">Save and Close</button>
-      <button class="ForceSaveButton" *ngIf="hasChanges && hasOverwrites">Force Save</button>
+      <button class="ForceSaveButton" (click)="forceSave()" *ngIf="hasChanges && hasOverwrites">Force Save</button>
     </div>
   </div>
 
@@ -69,7 +69,7 @@
         </div>
         <ng-container *ngIf="currIncident">
           <select [disabled]="isDispositioned" (input)="changed('call_type', $event)" [(ngModel)]="currIncident.call_type" [ngClass]="{'warn': isChanged('call_type'),'alert': irreconcilable('call_type')}">
-            <option value="null">Not Selected</option>
+            <option [ngValue]="null">Not Selected</option>
             <option *ngFor="let type of incTypes" [value]="type">
               {{ type }}
             </option>
@@ -126,8 +126,8 @@
           Disposition
         </div>
         <ng-container *ngIf="currIncident && attachedUnits.length == 0">
-          <select [disabled]="isDispositioned" (input)="changed('disposition', $event)" [(ngModel)]="currIncident.disposition" [ngClass]="{'warn': isChanged('disposition'),'alert': irreconcilable('disposition')}">
-            <option [value]="null">Not Selected</option>
+          <select [disabled]="isDispositioned && (incident?.disposition != null && incident?.disposition != '')" (input)="changed('disposition', $event)" [(ngModel)]="currIncident.disposition" [ngClass]="{'warn': isChanged('disposition'),'alert': irreconcilable('disposition')}">
+            <option [ngValue]="null">Not Selected</option>
             <option *ngFor="let type of dispTypes" [value]="type">
               {{ type }}
             </option>
@@ -138,12 +138,167 @@
         </div>
       </div>
     </div>
-
-
-
-
-
   </div>
+
+  
+
+  <div class="BottomFlexContainer">
+    <div class="BottomContainer">
+
+      <div class="NotesOutterContainer">
+        <div class="NotesContainer">
+          <div class="NotesHeader">
+            Incident Log
+          </div>
+          <div class="NotesForm" *ngIf="!isDispositioned">
+            <input type="text" [(ngModel)]="noteInput" (keydown.enter)="postMessage()" />
+            <button class="NotesSubmit" (click)="postMessage()">POST</button>
+          </div>
+          <div *ngIf="!isDispositioned && noteInput.startsWith('/')" class="autoCompleteContainer">
+            <div *ngFor="let autocomplete of shorthands | keyvalue" class="autoCompleteElement" (click)="applyShorthand(autocomplete.key)">
+              {{autocomplete.key}} : {{autocomplete.value}}
+            </div>
+          </div>
+          
+          <div class="Notes">
+            <div *ngFor="let note of filteredNotes" class="Note">
+              <div class="NoteContent">
+                {{note.message}}
+              </div>
+              <div *ngIf="note.unit && note.unit != ''" class="NoteUnit">
+                {{note.unit}}
+              </div>
+              <div class="NoteMeta">
+                {{note.creator}} - {{note.ts | date:'short'}}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="UnitsOutterContainer">
+        <div class="UnitsContainer">
+          <div class="NotesHeader">
+            Attached Units
+          </div>
+
+          <div class="Units Current">
+            <div class="UnitsHeader">
+              <div class="UnitsHeaderElement">
+                Unit
+              </div>
+              <div class="UnitsHeaderElement">
+                <div class="UnitsHeaderTSElement">
+                  DISP
+                </div>
+                <div class="UnitsHeaderTSElement">
+                  O/S
+                </div>
+                <div class="UnitsHeaderTSElement">
+                  ENR
+                </div>
+                <div class="UnitsHeaderTSElement">
+                  ARR
+                </div>
+                <div class="UnitsHeaderTSElement">
+                  CLR
+                </div>
+              </div>
+            </div>
+
+            <div *ngFor="let unit of attachedUnits; trackBy: trackAttachment" class="UnitAttached">
+              <div class="UnitAttachedName" style="color:{{unit.color}}">
+                {{unit.unit}}
+              </div>
+              <div class="UnitAttachedControls">
+
+                <div class="UnitAttachedControl">
+                  <div class="UnitAttachedTS">{{getFormattedTS(unit.dispatch_time)}}</div>
+                </div>
+                <div class="UnitAttachedControl">
+                  <div class="UnitAttachedTS" *ngIf="unit.arrival_time">{{getFormattedTS(unit.arrival_time)}}</div>
+                  <button class="UnitAttachedControlButton" *ngIf="!unit.arrival_time && unit.attachmentID != '-1'" (click)="OS(unit)">O/S</button>
+                </div>
+                <div class="UnitAttachedControl">
+                  <div class="UnitAttachedTS" *ngIf="unit.transport_time">{{getFormattedTS(unit.transport_time)}}</div>
+                  <button class="UnitAttachedControlButton" *ngIf="!unit.transport_time && unit.attachmentID != '-1'" (click)="ENR(unit)">ENR</button>
+                </div>
+                <div class="UnitAttachedControl">
+                  <div class="UnitAttachedTS" *ngIf="unit.transportdone_time">{{getFormattedTS(unit.transportdone_time)}}</div>
+                  <button class="UnitAttachedControlButton" *ngIf="!unit.transportdone_time && unit.attachmentID != '-1'" (click)="ARR(unit)">ARR</button>
+                </div>
+                <div class="UnitAttachedControl">
+                  <div class="UnitAttachedTS" *ngIf="unit.cleared_time">{{getFormattedTS(unit.cleared_time)}}</div>
+                  <button class="UnitAttachedControlButton" *ngIf="!unit.cleared_time && unit.attachmentID != '-1'" (click)="CLR(unit)">CLR</button>
+                </div>
+
+
+              </div>
+            </div>
+          </div>
+
+          <div class="NotesHeader">
+            Previously Attached Units
+          </div>
+
+          <div class="Units Previous">
+            <div class="UnitsHeader">
+              <div class="UnitsHeaderElement">
+                Unit
+              </div>
+              <div class="UnitsHeaderElement">
+                <div class="UnitsHeaderTSElement">
+                  DISP
+                </div>
+                <div class="UnitsHeaderTSElement">
+                  O/S
+                </div>
+                <div class="UnitsHeaderTSElement">
+                  ENR
+                </div>
+                <div class="UnitsHeaderTSElement">
+                  ARR
+                </div>
+                <div class="UnitsHeaderTSElement">
+                  CLR
+                </div>
+              </div>
+            </div>
+
+            <div *ngFor="let unit of clearedUnits; trackBy: trackAttachment" class="UnitAttached">
+              <div class="UnitAttachedName" style="color:{{unit.color}}">
+                {{unit.unit}}
+              </div>
+              <div class="UnitAttachedControls">
+
+                <div class="UnitAttachedControl">
+                  <div class="UnitAttachedTS">{{getFormattedTS(unit.dispatch_time)}}</div>
+                </div>
+                <div class="UnitAttachedControl">
+                  <div class="UnitAttachedTS">{{getFormattedTS(unit.arrival_time)}}</div>
+                </div>
+                <div class="UnitAttachedControl">
+                  <div class="UnitAttachedTS">{{getFormattedTS(unit.transport_time)}}</div>
+                </div>
+                <div class="UnitAttachedControl">
+                  <div class="UnitAttachedTS">{{getFormattedTS(unit.transportdone_time)}}</div>
+                </div>
+                <div class="UnitAttachedControl">
+                  <div class="UnitAttachedTS">{{getFormattedTS(unit.cleared_time)}}</div>
+                </div>
+
+
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+  
+
+  <!--
   <div>
     curr: {{currIncident?.location}}
   </div>
@@ -158,3 +313,4 @@
   <div *ngFor="let u of clearedUnits">
     {{u.unit}}
   </div>
+    -->

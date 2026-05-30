@@ -49,8 +49,19 @@ export class UnitSideBarComponent implements OnInit {
   }
 
   get genericUnits() {
-    return this.units.filter(u => u.type == 'Generic' && !(this.search != '' && !u.unit.toLowerCase().includes(this.search.toLowerCase())));
-  }
+    const seen = new Set<string>();
+
+    return this.units
+      .filter(u => u.type === 'Generic' && !(this.search !== '' && !u.unit.toLowerCase().includes(this.search.toLowerCase())))
+      .filter(u => {
+        if (seen.has(u.unit)) {
+          return false;
+        }
+
+        seen.add(u.unit);
+        return true;
+      });
+}
 
   get inServiceIndividual() {
     return this.units.filter(u => u.type != 'Generic' && u.status != 'Out Of Service' && !(this.search != '' && !u.unit.toLowerCase().includes(this.search.toLowerCase())));

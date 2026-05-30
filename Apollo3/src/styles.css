@@ -36,5 +36,6 @@ html {
   width: 100%;
   background: var(--bg);
   color: var(--text);
-  font-family:Helvetica, Arial, sans-serif;
+  font-family: Helvetica, Arial, sans-serif;
+  user-select: none;
 }

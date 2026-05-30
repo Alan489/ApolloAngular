@@ -1,0 +1,230 @@
+<div class="IncidentEditContainer">
+
+  <div class="Header">
+    <div class="HeaderNumber">
+      NEW INCIDENT
+    </div>
+    <div class="HeaderControls">
+      <button class="DiscardButton" (click)="close()">Cancel</button>
+      <button class="SaveButton" (click)="save()">Open Incident</button>
+    </div>
+  </div>
+
+  <div class="InformationContainer" *ngIf="currIncident">
+
+    <div class="leftInfo">
+      <div class="labeledTextField">
+        <div class="textFieldLabel">
+          Municipal CAD Number
+        </div>
+        <input class="textField" type="text" [(ngModel)]="currIncident.alternate_cad" />
+      </div>
+
+      <div class="labeledTextField">
+        <div class="textFieldLabel">
+          Address
+        </div>
+        <div class="dualField">
+          <input class="textField" type="text" [(ngModel)]="currIncident.location" />
+          <button class="checkAddressButton">Validate Address</button>
+        </div>
+      </div>
+
+      <div class="labeledTextField">
+        <div class="textFieldLabel">
+          Apartment/Detailed Location
+        </div>
+        <input class="textField" type="text" [(ngModel)]="currIncident.unit_number" />
+      </div>
+    </div>
+
+    <div class="centerInfo">
+      <div class="labeledTextField">
+        <div class="textFieldLabel">
+          Details
+        </div>
+        <input class="textField" type="text" [(ngModel)]="currIncident.call_details" />
+      </div>
+
+      <div class="labeledTextField">
+        <div class="textFieldLabel">
+          Reporting Party
+        </div>
+        <input class="textField" type="text" [(ngModel)]="currIncident.reporting_pty" />
+      </div>
+
+      <div class="labeledTextField">
+        <div class="textFieldLabel">
+          Callback Number
+        </div>
+        <input class="textField" type="text" [(ngModel)]="currIncident.contact_at" />
+      </div>
+
+      <div class="labeledTextField">
+        <div class="textFieldLabel">
+          Call Type
+        </div>
+        <ng-container *ngIf="currIncident">
+          <select [(ngModel)]="currIncident.call_type">
+            <option [ngValue]="null">Not Selected</option>
+            <option *ngFor="let type of incTypes" [value]="type">
+              {{ type }}
+            </option>
+          </select>
+        </ng-container>
+      </div>
+    </div>
+
+    <div class="rightInfo">
+
+      <div class="timeHolder">
+        <div class="timeModule">
+          <div class="timeLabel">
+            Opened
+          </div>
+          <div class="timeDisplay" *ngIf="currIncident">
+            {{ openedTS }}
+          </div>
+        </div>
+
+        <div class="timeModule">
+          <div class="timeLabel">
+            Dispatched
+          </div>
+          <div class="timeDisplay" *ngIf="currIncident">
+            {{ dispatchedTS }}
+          </div>
+        </div>
+
+        <div class="timeModule">
+          <div class="timeLabel">
+            First O/S
+          </div>
+          <div class="timeDisplay" *ngIf="currIncident">
+            {{ osTS }}
+          </div>
+        </div>
+
+        <div class="timeModule">
+          <div class="timeLabel">
+            Closed
+          </div>
+          <div class="timeDisplay" *ngIf="currIncident">
+            {{ clTS }}
+          </div>
+        </div>
+
+      </div>
+
+
+
+      <div class="labeledTextField">
+        <div class="textFieldLabel">
+          Disposition
+        </div>
+        <div class="ReleaseUnits">
+          Save Incident to set Disposition
+        </div>
+      </div>
+    </div>
+  </div>
+
+  
+
+  <div class="BottomFlexContainer">
+    <div class="BottomContainer">
+
+      <div class="NotesOutterContainer">
+        <div class="NotesContainer">
+          <div class="NotesHeader">
+            Incident Log
+          </div>
+          
+          <div class="Notes">
+            Save Incident to add Notes
+          </div>
+        </div>
+      </div>
+
+      <div class="UnitsOutterContainer">
+        <div class="UnitsContainer">
+          <div class="NotesHeader">
+            Attached Units
+          </div>
+
+          <div class="Units Current">
+            <div class="UnitsHeader">
+              <div class="UnitsHeaderElement">
+                Unit
+              </div>
+              <div class="UnitsHeaderElement">
+                <div class="UnitsHeaderTSElement">
+                  DISP
+                </div>
+                <div class="UnitsHeaderTSElement">
+                  O/S
+                </div>
+                <div class="UnitsHeaderTSElement">
+                  ENR
+                </div>
+                <div class="UnitsHeaderTSElement">
+                  ARR
+                </div>
+                <div class="UnitsHeaderTSElement">
+                  CLR
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="NotesHeader">
+            Previously Attached Units
+          </div>
+
+          <div class="Units Previous">
+            <div class="UnitsHeader">
+              <div class="UnitsHeaderElement">
+                Unit
+              </div>
+              <div class="UnitsHeaderElement">
+                <div class="UnitsHeaderTSElement">
+                  DISP
+                </div>
+                <div class="UnitsHeaderTSElement">
+                  O/S
+                </div>
+                <div class="UnitsHeaderTSElement">
+                  ENR
+                </div>
+                <div class="UnitsHeaderTSElement">
+                  ARR
+                </div>
+                <div class="UnitsHeaderTSElement">
+                  CLR
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+  
+
+  <!--
+  <div>
+    curr: {{currIncident?.location}}
+  </div>
+  <div>
+    old: {{incident?.location}}
+  </div>
+
+  <div *ngFor="let u of attachedUnits">
+    {{u.unit}}
+  </div>
+  <div>--</div>
+  <div *ngFor="let u of clearedUnits">
+    {{u.unit}}
+  </div>
+    -->

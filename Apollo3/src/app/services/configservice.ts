@@ -18,4 +18,5 @@ export class ConfigService {
   }
 
   get systemURL() { return this.config.systemURL; }
+  get shorthands() { return this.config.shorthands; }
 }
