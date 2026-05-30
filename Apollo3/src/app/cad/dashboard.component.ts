@@ -125,10 +125,14 @@ export class DashboardComponent {
   handleKeyDown(event: KeyboardEvent): void {
     const isModifierPressed = event.ctrlKey || event.metaKey;
 
+    if (isModifierPressed && event.key.toLowerCase() === 'e') {
+      event.preventDefault();
+
+    }
     
     if (isModifierPressed && event.key.toLowerCase() === 's') {
       event.preventDefault();
-      console.log('Dashboard ^s');
+      
     }
   }
 

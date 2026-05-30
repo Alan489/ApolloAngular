@@ -20,6 +20,7 @@
   display: flex;
   flex: 1;
   min-height: 0;
+  flex-direction:column;
 }
 
 .LEFT {
@@ -81,3 +82,30 @@ incidentedit, newincident, unitedit, newunit {
   align-items: center;
   font-size: 1em;
 }
+
+
+.commandBar {
+  align-content:center;
+  justify-content:center;
+  justify-items:center;
+  align-content:center;
+  text-align:center;
+  margin-top: 5px;
+  height: 1.5em;
+  display: flex;
+}
+
+.commandBarInput {
+  position: relative;
+  left: 0;
+  width: 100%;
+  border-radius: 7px;
+  color: var(--text);
+  background-color: var(--panel-alt);
+  border: 1px solid var(--border);
+  height: 1.5em;
+}
+  .commandBarInput:focus {
+    border: 1px solid var(--text);
+    outline: none;
+  }

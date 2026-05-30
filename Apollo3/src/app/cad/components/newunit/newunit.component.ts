@@ -75,9 +75,14 @@ export class NewUnitComponent implements OnInit {
 
   ngOnInit(): void {
     this.getRoles();
+    window.addEventListener('keydown', this.keyDownHandler);
   }
 
   ngOnChanges(): void {
+  }
+
+  ngOnDestroy(): void{
+    window.removeEventListener('keydown', this.keyDownHandler);
   }
 
   getRoles(): void {
@@ -91,10 +96,23 @@ export class NewUnitComponent implements OnInit {
     );
   }
 
+  //window.addEventListener('keydown', this.keyDownHandler);
+  //window.removeEventListener('keydown', this.keyDownHandler);
+  private keyDownHandler = (e: KeyboardEvent) => this.handleKeyDown(e);
+
+  handleKeyDown(event: KeyboardEvent): void {
+    const isModifierPressed = event.ctrlKey || event.metaKey;
+
+    if (isModifierPressed && event.key.toLowerCase() === 's') {
+      event.preventDefault();
+      this.saveUnit()
+    }
+  }
+
   saveUnit() {
     //https://localhost:7208/API/Units/Units/new/
 
-    if (this.deb) return;
+    if (this.deb || this.unit == '' || this.type == '' || this.role == '') return;
     this.deb = true;
 
     let unitNew: UnitDetails = {

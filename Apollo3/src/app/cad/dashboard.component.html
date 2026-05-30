@@ -40,17 +40,25 @@
       <div class="RIGHT">
         <incidentsdashboard [incidents]="incidents" (incidentClicked)="incidentClicked($event)"></incidentsdashboard>
       </div>
+      
     </div>
+
+
     <div *ngIf="state.startsWith('I')" class="DASHBOARD">
       <div class="RIGHTNoScroll">
         <incidentedit [incident]="incident" (incidentClicked)="incidentClicked($event)" [attachSubject]="attachSubject.asObservable()"></incidentedit>
       </div>
     </div>
+
     <div *ngIf="state.startsWith('U')" class="DASHBOARD">
       <div class="RIGHTNoScroll">
         <unitedit [unitListing]="unit" (unitClicked)="unitClicked($event)"></unitedit>
       </div>
     </div>
+  </div>
+
+  <div class="commandBar">
+    <input type="text" id="CommandBar" class="commandBarInput" autocomplete="off" placeholder="Click here or press CTRL+E to enter commands" />
   </div>
 
 </div>

@@ -77,6 +77,7 @@ export class UnitEditComponent implements OnInit {
     this.getRoles();
     this.role = this.unitListing?.role ?? '';
     this.unit = this.unitListing?.unit ?? '';
+    window.addEventListener('keydown', this.keyDownHandler);
   }
 
   ngOnChanges(): void {
@@ -86,6 +87,23 @@ export class UnitEditComponent implements OnInit {
     this.unit = this.unitListing?.unit ?? '';
     this.getUnitDetails();
     this.role = this.unitListing?.role ?? '';
+  }
+
+  ngOnDestroy(): void {
+    window.removeEventListener('keydown', this.keyDownHandler);
+  }
+
+  //window.addEventListener('keydown', this.keyDownHandler);
+  //window.removeEventListener('keydown', this.keyDownHandler);
+  private keyDownHandler = (e: KeyboardEvent) => this.handleKeyDown(e);
+
+  handleKeyDown(event: KeyboardEvent): void {
+    const isModifierPressed = event.ctrlKey || event.metaKey;
+
+    if (isModifierPressed && event.key.toLowerCase() === 's') {
+      event.preventDefault();
+      this.saveUnit()
+    }
   }
 
   getRoles(): void {
