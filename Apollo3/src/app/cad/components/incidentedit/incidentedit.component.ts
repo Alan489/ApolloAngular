@@ -438,6 +438,11 @@ export class IncidentEditComponent implements OnInit {
       }
     );
 
+    const inputElement = document.querySelector('#loginput') as HTMLInputElement | null;
+    if (inputElement) {
+      inputElement.focus();
+    }
+
 
   }
 
