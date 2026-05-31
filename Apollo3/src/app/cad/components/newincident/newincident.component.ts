@@ -39,16 +39,27 @@ export class NewIncidentComponent implements OnInit {
   constructor(private config: ConfigService, private router: Router, public datepipe: DatePipe, private authService: AuthenticationService, private http: HttpClient)
   {
     this.currIncident = {} as IncidentInformation;
+    this.currIncident = {} as IncidentInformation;
   }
 
   ngOnInit(): void {
     this.getincTypes();
     window.addEventListener('keydown', this.keyDownHandler);
+
+    
+  }
+
+  ngAfterViewInit() {
+    let inputElement = document.querySelector('#ele1') as HTMLInputElement | null;
+
+    if (inputElement) {
+      inputElement.focus();
+    }
   }
 
 
   ngOnChanges() {
-    
+    console.log('fired.');
 
   }
 

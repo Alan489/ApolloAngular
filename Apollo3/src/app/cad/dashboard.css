@@ -112,3 +112,44 @@ incidentedit, newincident, unitedit, newunit {
     border: 1px solid var(--text);
     outline: none;
   }
+
+
+.ManagementButton:not(:disabled) {
+  margin-top: 2px;
+  padding: 4px;
+  border-radius: 7px;
+  border: 1px solid var(--border);
+  background-color: var(--panel-alt);
+  transition: color .25s, border-color .25s;
+  color: var(--text-muted);
+  margin-left: 8px;
+}
+
+.ManagementButton:disabled {
+  margin-top: 2px;
+  padding: 4px;
+  border-radius: 7px;
+  border: 1px solid var(--border);
+  background-color: var(--panel-alt);
+  color: var(--border);
+  transition: color .25s, border-color .25s;
+  margin-left: 8px;
+}
+
+  .ManagementButton:not(:disabled):hover {
+    border-color: var(--text);
+    color: var(--text);
+  }
+
+.ManagementOptions {
+  margin-bottom: 5px;
+  height: 2em;
+  align-items: center;
+  display: flex;
+  border: 1px solid var(--border);
+  background-color: var(--panel);
+  border-radius: 10px;
+  padding: 5px;
+  margin-left: 10px;
+  overflow-y: clip;
+}

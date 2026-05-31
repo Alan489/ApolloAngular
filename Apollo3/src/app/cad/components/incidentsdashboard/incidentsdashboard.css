@@ -98,13 +98,13 @@
   }
 
 .Incident.Warning td:nth-child(4) {
-  background-color: var(--busy);
+  background-color: var(--warning);
 }
 
-  .Incident.Alert td:nth-child(4) {
-    background-color: var(--alert);
-  }
+.Incident.Alert td:nth-child(4) {
+  background-color: var(--attention);
+}
 
 .Incident.NoUnits td:nth-child(6) {
-  background-color: var(--busy);
+  background-color: var(--warning);
 }

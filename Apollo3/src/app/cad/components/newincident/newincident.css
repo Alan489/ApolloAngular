@@ -32,15 +32,6 @@ button {
   border: 1px solid var(--ok-soft);
 }
 
-.ForceSaveButton {
-  color: var(--ok-soft);
-  border: 1px solid var(--ok-soft);
-}
-  .ForceSaveButton:hover {
-    color: var(--alert);
-    border: 1px solid var(--alert);
-  }
-
 .DiscardButton {
   color: var(--alert-soft);
   border: 1px solid var(--alert-soft);
@@ -55,6 +46,17 @@ button {
   color: var(--alert);
   border: 1px solid var(--alert);
 }
+
+
+.ForceSaveButton {
+  color: var(--ok-soft);
+  border: 1px solid var(--ok-soft);
+}
+  .ForceSaveButton:hover {
+    color: var(--alert);
+    border: 1px solid var(--alert);
+  }
+
 
 *:focus {
   outline: none;

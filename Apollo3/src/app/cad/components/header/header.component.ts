@@ -16,6 +16,7 @@ export class HeaderComponent implements OnInit {
 
   constructor(private config: ConfigService, private router: Router, public datepipe: DatePipe, private authService: AuthenticationService)
   {
+    this.updateClock();
     setInterval(() => this.updateClock(), 1000);
   }
 

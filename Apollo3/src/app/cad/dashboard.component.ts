@@ -6,6 +6,7 @@ import { CommonModule } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
 import { Subject } from 'rxjs';
 import { FormsModule } from '@angular/forms';
+import { Router } from '@angular/router';
 
 interface IncResponse {
   errorMessage: Object;
@@ -36,18 +37,30 @@ export class DashboardComponent {
   public deb: boolean = false;
   public attachSubject: Subject<string> = new Subject<string>();
   public command: string = '';
+  private refreshToken: ReturnType<typeof setInterval> | undefined = undefined;
 
   
 
-  constructor(private config: ConfigService, private authService: AuthenticationService, private http: HttpClient)
+  constructor(private config: ConfigService, private authService: AuthenticationService, private http: HttpClient, private router: Router)
   {
     config.loadConfig().then(() => {
       this.loadData();
     });
-    setInterval(() => this.loadData(), 1000);
-    console.log("cons")
+    this.refreshToken = setInterval(() => this.loadData(), 1000);
     window.addEventListener('keydown', this.keyDownHandler);
     
+  }
+
+  get accessLevel() {
+    return this.authService.getSession()?.accessLevel ?? 0;
+  }
+
+  gotoUsers() {
+    this.router.navigate(['/users']);
+  }
+
+  gotoSystem() {
+    this.router.navigate(['/system']);
   }
 
   loadData() {
@@ -81,8 +94,15 @@ export class DashboardComponent {
       (error) => {
         console.log(error);
         this.deb = false;
+        if (error.status == 401)
+          this.authService.logout();
       }
     );
+  }
+
+  ngOnDestroy() {
+    clearInterval(this.refreshToken);
+    window.removeEventListener('keydown', this.keyDownHandler);
   }
 
   get incident() {
@@ -134,6 +154,12 @@ export class DashboardComponent {
     const normalized: string = command.toLowerCase();
     const commandSplit: string[] = command.split(' ');
     const commandSplitNormalized: string[] = normalized.split(' ');
+
+    if (normalized == 'dash' || normalized == 'dashboard' || normalized == 'd' || normalized == 'exit' || normalized == 'x') {
+      this.state = 'Dashboard';
+      this.command = '';
+      return;
+    }
 
     if (normalized == 'new') {
       this.state = 'NewIncident';
@@ -187,9 +213,10 @@ export class DashboardComponent {
                 const attachments = response.map(x => ({
                   ...x,
                   dispatch_time: x.dispatch_time ? new Date(x.dispatch_time) : null,
-                  ts_arrival: x.arrival_time ? new Date(x.arrival_time) : null,
-                  ts_opened: x.transport_time ? new Date(x.transport_time) : null,
-                  ts_complete: x.transportdone_time ? new Date(x.transportdone_time) : null
+                  arrival_time: x.arrival_time ? new Date(x.arrival_time) : null,
+                  transport_time: x.transport_time ? new Date(x.transport_time) : null,
+                  transportdone_time: x.transportdone_time ? new Date(x.transportdone_time) : null,
+                  cleared_time: x.cleared_time ? new Date(x.cleared_time) : null
                 }));
 
                 const attachment = attachments.find(a => a.unit == targetUnit.unit && a.cleared_time == null);
@@ -252,9 +279,10 @@ export class DashboardComponent {
                 const attachments = response.map(x => ({
                   ...x,
                   dispatch_time: x.dispatch_time ? new Date(x.dispatch_time) : null,
-                  ts_arrival: x.arrival_time ? new Date(x.arrival_time) : null,
-                  ts_opened: x.transport_time ? new Date(x.transport_time) : null,
-                  ts_complete: x.transportdone_time ? new Date(x.transportdone_time) : null
+                  arrival_time: x.arrival_time ? new Date(x.arrival_time) : null,
+                  transport_time: x.transport_time ? new Date(x.transport_time) : null,
+                  transportdone_time: x.transportdone_time ? new Date(x.transportdone_time) : null,
+                  cleared_time: x.cleared_time ? new Date(x.cleared_time) : null
                 }));
 
                 const attachment = attachments.find(a => a.unit == targetUnit.unit && a.cleared_time == null);
@@ -304,9 +332,10 @@ export class DashboardComponent {
                 const attachments = response.map(x => ({
                   ...x,
                   dispatch_time: x.dispatch_time ? new Date(x.dispatch_time) : null,
-                  ts_arrival: x.arrival_time ? new Date(x.arrival_time) : null,
-                  ts_opened: x.transport_time ? new Date(x.transport_time) : null,
-                  ts_complete: x.transportdone_time ? new Date(x.transportdone_time) : null
+                  arrival_time: x.arrival_time ? new Date(x.arrival_time) : null,
+                  transport_time: x.transport_time ? new Date(x.transport_time) : null,
+                  transportdone_time: x.transportdone_time ? new Date(x.transportdone_time) : null,
+                  cleared_time: x.cleared_time ? new Date(x.cleared_time) : null
                 }));
 
                 const attachment = attachments.find(a => a.unit == targetUnit.unit && a.cleared_time == null);
@@ -357,9 +386,10 @@ export class DashboardComponent {
                 const attachments = response.map(x => ({
                   ...x,
                   dispatch_time: x.dispatch_time ? new Date(x.dispatch_time) : null,
-                  ts_arrival: x.arrival_time ? new Date(x.arrival_time) : null,
-                  ts_opened: x.transport_time ? new Date(x.transport_time) : null,
-                  ts_complete: x.transportdone_time ? new Date(x.transportdone_time) : null
+                  arrival_time: x.arrival_time ? new Date(x.arrival_time) : null,
+                  transport_time: x.transport_time ? new Date(x.transport_time) : null,
+                  transportdone_time: x.transportdone_time ? new Date(x.transportdone_time) : null,
+                  cleared_time: x.cleared_time ? new Date(x.cleared_time) : null
                 }));
 
                 const attachment = attachments.find(a => a.unit == targetUnit.unit && a.cleared_time == null);
@@ -402,7 +432,7 @@ export class DashboardComponent {
 
         if (commandSplitNormalized[1] == 'a') {
 
-          if (targetUnit.incID != 0) {
+          if (targetUnit.status != 'In Service') {
             return;
           }
 
@@ -453,8 +483,6 @@ export class DashboardComponent {
 
       }//end 2 param commands
 
-      console.log(commandSplitNormalized[1]);
-      console.log(targetUnit.incID);
 
       //notes
       if (commandSplitNormalized[1] == 'n' && targetUnit.incID > 0) {
@@ -489,6 +517,344 @@ export class DashboardComponent {
 
 
     }//End Unit Commands
+
+    //Incident Commands
+    if (normalized.startsWith('i')) {
+      const targetIncident = this.incidents.find(i => i.call_number.toLowerCase().endsWith(commandSplitNormalized[0].substring(1)));
+      if (targetIncident == null) return;
+
+      if (commandSplitNormalized.length == 1) {
+        //Open Incident
+          this.incidentClicked(targetIncident.incident_id);
+          this.command = '';
+        return;
+        //End Open Incident
+      }
+
+      //Note Add
+      if (commandSplitNormalized[1] == 'n' && commandSplitNormalized.length > 2) {
+        let message = commandSplit.slice(2).join(' ');
+
+        if (message.startsWith('/') && this.config.shorthands[message.substring(1).toLowerCase()]) {
+          message = this.config.shorthands[message.substring(1).toLowerCase()];
+        }
+
+        let np: NotePost = {
+          creator: null,
+          message: message,
+          sess: this.authService.getSession() as Session,
+          ts: new Date(),
+          unit: ''
+        }
+
+        this.http.post(`https://${this.config.systemURL.trim()}/API/Incidents/Incidents/post/incnotes/${targetIncident.incident_id}`, np).subscribe(
+          (response) => {
+
+
+          },
+          (error) => {
+            console.log(error);
+          }
+        );
+
+        this.command = '';
+      }//End Note Add
+
+    }//End Incident Commands
+
+    //Context Commands
+    if (this.incident) {
+
+      if (commandSplitNormalized.length == 2) {
+
+        //Attach
+        if (commandSplitNormalized[0] == 'a' && commandSplitNormalized[1].startsWith('u')) {
+          const targetUnit = this.units.find(u => u.unit.toLowerCase().endsWith(commandSplitNormalized[1].substring(1)));
+          if (targetUnit == null) return;
+          console.log(targetUnit);
+          console.log(commandSplitNormalized[1]);
+          if (targetUnit.status != 'In Service') return;
+
+
+          this.http.post(`https://${this.config.systemURL.trim()}/API/Units/Units/new/attachment/${this.incident.incident_id}/${targetUnit.unit}`, this.authService.getSession()).subscribe(
+            (response) => {
+
+            },
+            (error) => {
+              console.log(error);
+            }
+          );
+
+          if (this.incident.ts_dispatch == null) {
+            this.http.post(`https://${this.config.systemURL.trim()}/API/Incidents/Incidents/post/timestamp/dp/${this.incident.incident_id}`, this.authService.getSession()).subscribe(
+              (response) => {
+
+              },
+              (error) => {
+                console.log(error);
+              }
+            );
+          }
+
+          this.command = '';
+
+          return
+        }//End Attach
+
+        //On Scene
+        if (commandSplitNormalized[0] == 'os' && commandSplitNormalized[1].startsWith('u')) {
+          const targetUnit = this.units.find(u => u.unit.toLowerCase().endsWith(commandSplitNormalized[1].substring(1)));
+          if (targetUnit == null) return;
+          if (targetUnit.incID != this.incident.incident_id) return;
+
+
+          this.command = '';
+
+          this.http.post<UnitAttachment[]>(`https://${this.config.systemURL.trim()}/API/Units/Units/get/attachment/${this.incident.incident_id}`, this.authService.getSession()).subscribe(
+            (response) => {
+
+              const attachments = response.map(x => ({
+                ...x,
+                dispatch_time: x.dispatch_time ? new Date(x.dispatch_time) : null,
+                arrival_time: x.arrival_time ? new Date(x.arrival_time) : null,
+                transport_time: x.transport_time ? new Date(x.transport_time) : null,
+                transportdone_time: x.transportdone_time ? new Date(x.transportdone_time) : null,
+                cleared_time: x.cleared_time ? new Date(x.cleared_time) : null
+              }));
+
+              const attachment = attachments.find(a => a.unit == targetUnit.unit && a.cleared_time == null);
+
+              if (attachment == null) {
+                return;
+              }
+
+              if (attachment.arrival_time != null) return;
+
+              attachment.arrival_time = new Date();
+
+              this.http.post(`https://${this.config.systemURL.trim()}/API/Units/Units/post/attachment/${attachment.attachmentID}/arrived`, this.authService.getSession()).subscribe(
+                (response) => {
+
+                },
+                (error) => {
+                  console.log(error);
+                }
+              );
+
+
+              if (this.incident?.ts_arrival == null) {
+                this.http.post(`https://${this.config.systemURL.trim()}/API/Incidents/Incidents/post/timestamp/os/${this.incident?.incident_id}`, this.authService.getSession()).subscribe(
+                  (response) => {
+
+                  },
+                  (error) => {
+                    console.log(error);
+                  }
+                );
+              }
+
+
+            },
+            (error) => {
+              console.log(error);
+            }
+          );
+
+          return;
+
+        }//End On Scene
+
+        //Transport
+        if ((commandSplitNormalized[0] == 'enr' || commandSplitNormalized[0] == 'er') && commandSplitNormalized[1].startsWith('u')) {
+          const targetUnit = this.units.find(u => u.unit.toLowerCase().endsWith(commandSplitNormalized[1].substring(1)));
+          if (targetUnit == null) return;
+          if (targetUnit.incID != this.incident.incident_id) return;
+
+
+          this.http.post<UnitAttachment[]>(`https://${this.config.systemURL.trim()}/API/Units/Units/get/attachment/${this.incident?.incident_id}`, this.authService.getSession()).subscribe(
+            (response) => {
+
+              const attachments = response.map(x => ({
+                ...x,
+                dispatch_time: x.dispatch_time ? new Date(x.dispatch_time) : null,
+                arrival_time: x.arrival_time ? new Date(x.arrival_time) : null,
+                transport_time: x.transport_time ? new Date(x.transport_time) : null,
+                transportdone_time: x.transportdone_time ? new Date(x.transportdone_time) : null,
+                cleared_time: x.cleared_time ? new Date(x.cleared_time) : null
+              }));
+
+              const attachment = attachments.find(a => a.unit == targetUnit.unit && a.cleared_time == null);
+
+              if (attachment == null) {
+                return;
+              }
+
+              if (attachment.transport_time != null) return;
+
+              attachment.transport_time = new Date();
+
+              this.http.post(`https://${this.config.systemURL.trim()}/API/Units/Units/post/attachment/${attachment.attachmentID}/transport`, this.authService.getSession()).subscribe(
+                (response) => {
+
+                },
+                (error) => {
+                  console.log(error);
+                }
+              );
+
+              this.command = '';
+            },
+            (error) => {
+              console.log(error);
+            }
+          );
+          this.command = '';
+          return;
+
+        }//End Transport
+
+        //Transport Done
+        if (commandSplitNormalized[0] == 'arr' && commandSplitNormalized[1].startsWith('u')) {
+          const targetUnit = this.units.find(u => u.unit.toLowerCase().endsWith(commandSplitNormalized[1].substring(1)));
+          if (targetUnit == null) return;
+          if (targetUnit.incID != this.incident.incident_id) return;
+
+
+          this.http.post<UnitAttachment[]>(`https://${this.config.systemURL.trim()}/API/Units/Units/get/attachment/${this.incident?.incident_id}`, this.authService.getSession()).subscribe(
+            (response) => {
+
+              const attachments = response.map(x => ({
+                ...x,
+                dispatch_time: x.dispatch_time ? new Date(x.dispatch_time) : null,
+                arrival_time: x.arrival_time ? new Date(x.arrival_time) : null,
+                transport_time: x.transport_time ? new Date(x.transport_time) : null,
+                transportdone_time: x.transportdone_time ? new Date(x.transportdone_time) : null,
+                cleared_time: x.cleared_time ? new Date(x.cleared_time) : null
+              }));
+
+              const attachment = attachments.find(a => a.unit == targetUnit.unit && a.cleared_time == null);
+
+              if (attachment == null) {
+                return;
+              }
+
+              if (attachment.transportdone_time != null) return;
+
+              attachment.transportdone_time = new Date();
+
+              this.http.post(`https://${this.config.systemURL.trim()}/API/Units/Units/post/attachment/${attachment.attachmentID}/transportdone`, this.authService.getSession()).subscribe(
+                (response) => {
+
+                },
+                (error) => {
+                  console.log(error);
+                }
+              );
+
+
+            },
+            (error) => {
+              console.log(error);
+            }
+          );
+          this.command = '';
+          return;
+
+        }//End Done
+
+        //Cleared Done
+        if (commandSplitNormalized[0] == 'clr' && commandSplitNormalized[1].startsWith('u')) {
+          const targetUnit = this.units.find(u => u.unit.toLowerCase().endsWith(commandSplitNormalized[1].substring(1)));
+          if (targetUnit == null) return;
+          if (targetUnit.incID != this.incident.incident_id) return;
+
+
+          this.http.post<UnitAttachment[]>(`https://${this.config.systemURL.trim()}/API/Units/Units/get/attachment/${this.incident?.incident_id}`, this.authService.getSession()).subscribe(
+            (response) => {
+
+              const attachments = response.map(x => ({
+                ...x,
+                dispatch_time: x.dispatch_time ? new Date(x.dispatch_time) : null,
+                arrival_time: x.arrival_time ? new Date(x.arrival_time) : null,
+                transport_time: x.transport_time ? new Date(x.transport_time) : null,
+                transportdone_time: x.transportdone_time ? new Date(x.transportdone_time) : null,
+                cleared_time: x.cleared_time ? new Date(x.cleared_time) : null
+              }));
+
+              const attachment = attachments.find(a => a.unit == targetUnit.unit && a.cleared_time == null);
+
+              if (attachment == null) {
+                return;
+              }
+
+              if (attachment.cleared_time != null) return;
+
+              attachment.cleared_time = new Date();
+
+              this.http.post(`https://${this.config.systemURL.trim()}/API/Units/Units/post/attachment/${attachment.attachmentID}/cleared`, this.authService.getSession()).subscribe(
+                (response) => {
+
+                },
+                (error) => {
+                  console.log(error);
+                }
+              );
+
+
+            },
+            (error) => {
+              console.log(error);
+            }
+          );
+          this.command = '';
+          return;
+
+        }//End Done
+
+        //Cleared Done
+        
+
+
+
+      } 
+
+      if (commandSplitNormalized[0] == 'n') {
+
+        let message = commandSplit.slice(1).join(' ');
+
+        if (message.startsWith('/') && this.config.shorthands[message.substring(1).toLowerCase()]) {
+          message = this.config.shorthands[message.substring(1).toLowerCase()];
+        }
+
+        let np: NotePost = {
+          creator: null,
+          message: message,
+          sess: this.authService.getSession() as Session,
+          ts: new Date(),
+          unit: ''
+        }
+
+        this.http.post(`https://${this.config.systemURL.trim()}/API/Incidents/Incidents/post/incnotes/${this.incident?.incident_id}`, np).subscribe(
+          (response) => {
+
+
+          },
+          (error) => {
+            console.log(error);
+          }
+        );
+
+        this.command = '';
+
+        return;
+
+      }//End Done
+
+    }
+
+
+    //End Context Commands
+
 
   }
 

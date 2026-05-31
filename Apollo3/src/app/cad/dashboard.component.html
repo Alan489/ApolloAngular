@@ -37,6 +37,11 @@
 
 
     <div *ngIf="state == 'Dashboard'" class="DASHBOARD">
+      <div class="ManagementOptions" *ngIf="accessLevel > 1">
+        Administrative Actions
+        <button class="ManagementButton" [disabled]="accessLevel < 5" (click)="gotoUsers()">User Management</button>
+        <button class="ManagementButton" [disabled]="accessLevel < 5" (click)="gotoSystem()">System Management</button>
+      </div>
       <div class="RIGHT">
         <incidentsdashboard [incidents]="incidents" (incidentClicked)="incidentClicked($event)"></incidentsdashboard>
       </div>
