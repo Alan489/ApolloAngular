@@ -1,10 +1,11 @@
 import { Component } from '@angular/core';
 import { AuthenticationService, ConfigService } from '../services';
-import { Session, UnitListing, IncidentInformation } from '../models';
+import { Session, UnitListing, IncidentInformation, UnitAttachment } from '../models';
 import { HeaderComponent, UnitSideBarComponent, IncidentsDashboardComponent, IncidentEditComponent, NewIncidentComponent, UnitEditComponent, NewUnitComponent } from './components';
 import { CommonModule } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
 import { Subject } from 'rxjs';
+import { FormsModule } from '@angular/forms';
 
 interface IncResponse {
   errorMessage: Object;
@@ -12,10 +13,18 @@ interface IncResponse {
   incidents: IncidentInformation[];
 }
 
+interface NotePost {
+  creator: null,
+  message: string,
+  sess: Session,
+  ts: Date,
+  unit: string
+}
+
 @Component({
   templateUrl: 'dashboard.component.html',
   standalone: true,
-  imports: [HeaderComponent, CommonModule, UnitSideBarComponent, IncidentsDashboardComponent, IncidentEditComponent, NewIncidentComponent, UnitEditComponent, NewUnitComponent],
+  imports: [HeaderComponent, CommonModule, UnitSideBarComponent, IncidentsDashboardComponent, IncidentEditComponent, NewIncidentComponent, UnitEditComponent, NewUnitComponent, FormsModule],
   styleUrls: ['./dashboard.css']
 })
 export class DashboardComponent {
@@ -26,6 +35,7 @@ export class DashboardComponent {
   public selectedIncident: IncidentInformation | null = null;
   public deb: boolean = false;
   public attachSubject: Subject<string> = new Subject<string>();
+  public command: string = '';
 
   
 
@@ -117,6 +127,371 @@ export class DashboardComponent {
     this.attachSubject.next(attach);
   }
 
+  submitCommand() {
+    if (this.command.trim() == '') return;
+
+    const command: string = this.command.trim();
+    const normalized: string = command.toLowerCase();
+    const commandSplit: string[] = command.split(' ');
+    const commandSplitNormalized: string[] = normalized.split(' ');
+
+    if (normalized == 'new') {
+      this.state = 'NewIncident';
+      this.command = '';
+      return;
+    }
+
+    //Handle Unit Commands
+    if (normalized.startsWith('u')) {
+      
+      const targetUnit = this.units.find(u => u.unit.toLowerCase().endsWith(commandSplitNormalized[0].substring(1)));
+      if (targetUnit == null) return;
+
+      //Open Unit
+      if (commandSplitNormalized.length == 1) {
+        this.unitClicked(targetUnit.unit);
+        this.command = '';
+        return;
+      }
+      //Open Unit End
+
+      //Single param commands
+      if (commandSplitNormalized.length == 2) {
+
+        if (commandSplitNormalized[1] == 'i') {
+
+          if (targetUnit.attachment) {
+            const oi = this.incidents.find(i => i.incident_id == targetUnit.incID)
+            if (oi)
+              this.incidentClicked(oi.incident_id);
+            this.command = '';
+          }
+
+          return;
+
+        }//Open incident end
+
+        if (commandSplitNormalized[1] == 'os') {
+          if (targetUnit.attachment) {
+
+            const oi = this.incidents.find(i => i.incident_id == targetUnit.incID)
+            if (oi == null) {
+              this.command = '';
+              return;
+            }
+            this.command = '';
+
+            this.http.post<UnitAttachment[]>(`https://${this.config.systemURL.trim()}/API/Units/Units/get/attachment/${oi.incident_id}`, this.authService.getSession()).subscribe(
+              (response) => {
+
+                const attachments = response.map(x => ({
+                  ...x,
+                  dispatch_time: x.dispatch_time ? new Date(x.dispatch_time) : null,
+                  ts_arrival: x.arrival_time ? new Date(x.arrival_time) : null,
+                  ts_opened: x.transport_time ? new Date(x.transport_time) : null,
+                  ts_complete: x.transportdone_time ? new Date(x.transportdone_time) : null
+                }));
+
+                const attachment = attachments.find(a => a.unit == targetUnit.unit && a.cleared_time == null);
+
+                if (attachment == null) {
+                  return;
+                }
+
+                if (attachment.arrival_time != null) return;
+
+                attachment.arrival_time = new Date();
+
+                this.http.post(`https://${this.config.systemURL.trim()}/API/Units/Units/post/attachment/${attachment.attachmentID}/arrived`, this.authService.getSession()).subscribe(
+                  (response) => {
+
+                  },
+                  (error) => {
+                    console.log(error);
+                  }
+                );
+
+
+                if (oi.ts_arrival == null) {
+                  this.http.post(`https://${this.config.systemURL.trim()}/API/Incidents/Incidents/post/timestamp/os/${oi.incident_id}`, this.authService.getSession()).subscribe(
+                    (response) => {
+
+                    },
+                    (error) => {
+                      console.log(error);
+                    }
+                  );
+                }
+
+
+              },
+              (error) => {
+                console.log(error);
+              }
+            );
+
+          }
+
+          return;
+
+        }//End mark on scene
+
+        if (commandSplitNormalized[1] == 'enr' || commandSplitNormalized[1] == 'er') {
+          if (targetUnit.attachment) {
+
+            const oi = this.incidents.find(i => i.incident_id == targetUnit.incID)
+            if (oi == null) {
+              this.command = '';
+              return;
+            }
+            this.command = '';
+
+            this.http.post<UnitAttachment[]>(`https://${this.config.systemURL.trim()}/API/Units/Units/get/attachment/${oi.incident_id}`, this.authService.getSession()).subscribe(
+              (response) => {
+
+                const attachments = response.map(x => ({
+                  ...x,
+                  dispatch_time: x.dispatch_time ? new Date(x.dispatch_time) : null,
+                  ts_arrival: x.arrival_time ? new Date(x.arrival_time) : null,
+                  ts_opened: x.transport_time ? new Date(x.transport_time) : null,
+                  ts_complete: x.transportdone_time ? new Date(x.transportdone_time) : null
+                }));
+
+                const attachment = attachments.find(a => a.unit == targetUnit.unit && a.cleared_time == null);
+
+                if (attachment == null) {
+                  return;
+                }
+
+                if (attachment.transport_time != null) return;
+                
+
+                this.http.post(`https://${this.config.systemURL.trim()}/API/Units/Units/post/attachment/${attachment.attachmentID}/transport`, this.authService.getSession()).subscribe(
+                  (response) => {
+
+                  },
+                  (error) => {
+                    console.log(error);
+                  }
+                );
+
+
+              },
+              (error) => {
+                console.log(error);
+              }
+            );
+
+          }
+
+          return;
+
+        }//End mark enr
+
+        if (commandSplitNormalized[1] == 'arr') {
+          if (targetUnit.attachment) {
+
+            const oi = this.incidents.find(i => i.incident_id == targetUnit.incID)
+            if (oi == null) {
+              this.command = '';
+              return;
+            }
+            this.command = '';
+
+            this.http.post<UnitAttachment[]>(`https://${this.config.systemURL.trim()}/API/Units/Units/get/attachment/${oi.incident_id}`, this.authService.getSession()).subscribe(
+              (response) => {
+
+                const attachments = response.map(x => ({
+                  ...x,
+                  dispatch_time: x.dispatch_time ? new Date(x.dispatch_time) : null,
+                  ts_arrival: x.arrival_time ? new Date(x.arrival_time) : null,
+                  ts_opened: x.transport_time ? new Date(x.transport_time) : null,
+                  ts_complete: x.transportdone_time ? new Date(x.transportdone_time) : null
+                }));
+
+                const attachment = attachments.find(a => a.unit == targetUnit.unit && a.cleared_time == null);
+
+                if (attachment == null) {
+                  return;
+                }
+
+                if (attachment.transportdone_time != null) return;
+
+                attachment.arrival_time = new Date();
+
+                this.http.post(`https://${this.config.systemURL.trim()}/API/Units/Units/post/attachment/${attachment.attachmentID}/transportdone`, this.authService.getSession()).subscribe(
+                  (response) => {
+
+                  },
+                  (error) => {
+                    console.log(error);
+                  }
+                );
+
+
+              },
+              (error) => {
+                console.log(error);
+              }
+            );
+
+          }
+
+          return;
+
+        }//End mark dest
+
+        if (commandSplitNormalized[1] == 'clr') {
+          if (targetUnit.attachment) {
+
+            const oi = this.incidents.find(i => i.incident_id == targetUnit.incID)
+            if (oi == null) {
+              this.command = '';
+              return;
+            }
+            this.command = '';
+
+            this.http.post<UnitAttachment[]>(`https://${this.config.systemURL.trim()}/API/Units/Units/get/attachment/${oi.incident_id}`, this.authService.getSession()).subscribe(
+              (response) => {
+
+                const attachments = response.map(x => ({
+                  ...x,
+                  dispatch_time: x.dispatch_time ? new Date(x.dispatch_time) : null,
+                  ts_arrival: x.arrival_time ? new Date(x.arrival_time) : null,
+                  ts_opened: x.transport_time ? new Date(x.transport_time) : null,
+                  ts_complete: x.transportdone_time ? new Date(x.transportdone_time) : null
+                }));
+
+                const attachment = attachments.find(a => a.unit == targetUnit.unit && a.cleared_time == null);
+
+                if (attachment == null) {
+                  return;
+                }
+
+                if (attachment.cleared_time != null) return;
+
+                attachment.cleared_time = new Date();
+
+                this.http.post(`https://${this.config.systemURL.trim()}/API/Units/Units/post/attachment/${attachment.attachmentID}/cleared`, this.authService.getSession()).subscribe(
+                  (response) => {
+
+                  },
+                  (error) => {
+                    console.log(error);
+                  }
+                );
+
+
+              },
+              (error) => {
+                console.log(error);
+              }
+            );
+
+          }
+
+          return;
+
+        }//End mark clear
+        
+      }
+      //Single param commands End
+
+      //Two param commands
+      if (commandSplitNormalized.length == 3) {
+
+        if (commandSplitNormalized[1] == 'a') {
+
+          if (targetUnit.incID != 0) {
+            return;
+          }
+
+          let targetIncident: number = -1;
+
+          if (commandSplitNormalized[2].startsWith('i')) {
+            targetIncident = this.incidents.find(i => i.call_number.endsWith(commandSplitNormalized[2].substring(1)))?.incident_id ?? -1;
+          }
+
+          if (commandSplitNormalized[2].startsWith('u')) {
+            const unitA = this.units.find(u => u.unit.toLowerCase().endsWith(commandSplitNormalized[2].substring(1)));
+            if (unitA && unitA.incID)
+              targetIncident = unitA.incID;
+          }
+
+          if (targetIncident == -1)
+            return;
+
+          const targetInc = this.incidents.find(i => i.incident_id == targetIncident);
+
+          if (targetInc == null)
+            return;
+
+          this.http.post(`https://${this.config.systemURL.trim()}/API/Units/Units/new/attachment/${targetIncident}/${targetUnit.unit}`, this.authService.getSession()).subscribe(
+            (response) => {
+
+            },
+            (error) => {
+              console.log(error);
+            }
+          );
+
+          if (targetInc.ts_dispatch == null) {
+            this.http.post(`https://${this.config.systemURL.trim()}/API/Incidents/Incidents/post/timestamp/dp/${targetIncident}`, this.authService.getSession()).subscribe(
+              (response) => {
+
+              },
+              (error) => {
+                console.log(error);
+              }
+            );
+          }
+
+          this.command = '';
+          return;
+
+        }//Attach command end
+
+      }//end 2 param commands
+
+      console.log(commandSplitNormalized[1]);
+      console.log(targetUnit.incID);
+
+      //notes
+      if (commandSplitNormalized[1] == 'n' && targetUnit.incID > 0) {
+
+        let message = commandSplit.slice(2).join(' ');
+
+        if (message.startsWith('/') && this.config.shorthands[message.substring(1).toLowerCase()]) {
+          message = this.config.shorthands[message.substring(1).toLowerCase()];
+        }
+
+        let np: NotePost = {
+          creator: null,
+          message: message,
+          sess: this.authService.getSession() as Session,
+          ts: new Date(),
+          unit: targetUnit.unit
+        }
+
+        this.http.post(`https://${this.config.systemURL.trim()}/API/Incidents/Incidents/post/incnotes/${targetUnit.incID}`, np).subscribe(
+          (response) => {
+
+
+          },
+          (error) => {
+            console.log(error);
+          }
+        );
+
+        this.command = '';
+      }
+
+
+
+    }//End Unit Commands
+
+  }
+
 
   //window.addEventListener('keydown', this.keyDownHandler);
   //window.removeEventListener('keydown', this.keyDownHandler);
@@ -127,7 +502,10 @@ export class DashboardComponent {
 
     if (isModifierPressed && event.key.toLowerCase() === 'e') {
       event.preventDefault();
-
+      const inputElement = document.querySelector('#CommandBar') as HTMLInputElement | null;
+      if (inputElement) {
+        inputElement.focus();
+      }
     }
     
     if (isModifierPressed && event.key.toLowerCase() === 's') {

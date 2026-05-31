@@ -20,7 +20,7 @@
         <div class="textFieldLabel">
           Municipal CAD Number
         </div>
-        <input class="textField" type="text" [disabled]="isDispositioned" (input)="changed('alternate_cad')" [(ngModel)]="currIncident.alternate_cad" [ngClass]="{'warn': isChanged('alternate_cad'),'alert': irreconcilable('alternate_cad')}" />
+        <input class="textField" autocomplete="off" type="text" [disabled]="isDispositioned" (input)="changed('alternate_cad')" [(ngModel)]="currIncident.alternate_cad" [ngClass]="{'warn': isChanged('alternate_cad'),'alert': irreconcilable('alternate_cad')}" />
       </div>
 
       <div class="labeledTextField">
@@ -28,7 +28,7 @@
           Address
         </div>
         <div class="dualField">
-          <input class="textField" type="text" [disabled]="isDispositioned" (input)="changed('location')" [(ngModel)]="currIncident.location" [ngClass]="{'warn': isChanged('location'),'alert': irreconcilable('location')}" />
+          <input class="textField" autocomplete="off" type="text" [disabled]="isDispositioned" (input)="changed('location')" [(ngModel)]="currIncident.location" [ngClass]="{'warn': isChanged('location'),'alert': irreconcilable('location')}" />
           <button (click)="googleTheAddress()" [disabled]="isDispositioned" [ngClass]="{'checkAddressButton': !isDispositioned,'checkAddressButtonDisabled': isDispositioned}" tabindex="-1">Validate Address (CTRL+G)</button>
         </div>
       </div>
@@ -37,7 +37,7 @@
         <div class="textFieldLabel">
           Apartment/Detailed Location
         </div>
-        <input class="textField" type="text" [disabled]="isDispositioned" (input)="changed('unit_number')" [(ngModel)]="currIncident.unit_number" [ngClass]="{'warn': isChanged('unit_number'),'alert': irreconcilable('unit_number')}" />
+        <input class="textField" autocomplete="off" type="text" [disabled]="isDispositioned" (input)="changed('unit_number')" [(ngModel)]="currIncident.unit_number" [ngClass]="{'warn': isChanged('unit_number'),'alert': irreconcilable('unit_number')}" />
       </div>
     </div>
 
@@ -46,21 +46,21 @@
         <div class="textFieldLabel">
           Details
         </div>
-        <input class="textField" type="text" [disabled]="isDispositioned" (input)="changed('call_details')" [(ngModel)]="currIncident.call_details" [ngClass]="{'warn': isChanged('call_details'),'alert': irreconcilable('call_details')}" />
+        <input class="textField" autocomplete="off" type="text" [disabled]="isDispositioned" (input)="changed('call_details')" [(ngModel)]="currIncident.call_details" [ngClass]="{'warn': isChanged('call_details'),'alert': irreconcilable('call_details')}" />
       </div>
 
       <div class="labeledTextField">
         <div class="textFieldLabel">
           Reporting Party
         </div>
-        <input class="textField" type="text" [disabled]="isDispositioned" (input)="changed('reporting_pty')" [(ngModel)]="currIncident.reporting_pty" [ngClass]="{'warn': isChanged('reporting_pty'),'alert': irreconcilable('reporting_pty')}" />
+        <input class="textField" autocomplete="off" type="text" [disabled]="isDispositioned" (input)="changed('reporting_pty')" [(ngModel)]="currIncident.reporting_pty" [ngClass]="{'warn': isChanged('reporting_pty'),'alert': irreconcilable('reporting_pty')}" />
       </div>
 
       <div class="labeledTextField">
         <div class="textFieldLabel">
           Callback Number
         </div>
-        <input class="textField" type="text" [disabled]="isDispositioned" (input)="changed('contact_at')" [(ngModel)]="currIncident.contact_at" [ngClass]="{'warn': isChanged('contact_at'),'alert': irreconcilable('contact_at')}" />
+        <input class="textField" autocomplete="off" type="text" [disabled]="isDispositioned" (input)="changed('contact_at')" [(ngModel)]="currIncident.contact_at" [ngClass]="{'warn': isChanged('contact_at'),'alert': irreconcilable('contact_at')}" />
       </div>
 
       <div class="labeledTextField">
@@ -151,7 +151,7 @@
             Incident Log
           </div>
           <div class="NotesForm" *ngIf="!isDispositioned">
-            <input type="text" [(ngModel)]="noteInput" (keydown.enter)="postMessage()" placeholder="Click here or press CTRL+D" id="loginput"/>
+            <input type="text" [(ngModel)]="noteInput" (keydown.enter)="postMessage()" placeholder="Click here or press CTRL+D" id="loginput" autocomplete="off"/>
             <button class="NotesSubmit" (click)="postMessage()">POST</button>
           </div>
           <div *ngIf="!isDispositioned && noteInput.startsWith('/')" class="autoCompleteContainer">

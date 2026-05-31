@@ -58,7 +58,7 @@
   </div>
 
   <div class="commandBar">
-    <input type="text" id="CommandBar" class="commandBarInput" autocomplete="off" placeholder="Click here or press CTRL+E to enter commands" />
+    <input type="text" id="CommandBar" class="commandBarInput" autocomplete="off" placeholder="Click here or press CTRL+E to enter commands" (keydown.enter)="submitCommand()" [(ngModel)]="command"/>
   </div>
 
 </div>

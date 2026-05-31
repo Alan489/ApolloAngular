@@ -58,7 +58,9 @@ incidentsdashboard {
   scrollbar-width: thin;
   scrollbar-color: var(--border) var(--panel);
 }
+
 .RIGHTNoScroll {
+  min-height: 0px;
   display: flex;
   flex: 1;
 }
@@ -71,6 +73,7 @@ incidentedit, newincident, unitedit, newunit {
   border-radius: 10px;
   padding: 5px;
   margin-left: 10px;
+  overflow-y:clip;
 }
 
 
