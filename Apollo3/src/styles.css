@@ -21,6 +21,8 @@
   --ok-soft: #ddf0bc;
   --alert: #9c2f3b;
   --alert-soft: #f8d3d9;
+  --warning: rgba(127, 75, 9, 0.5);
+  --attention: rgba(156, 47, 59, 0.5);
   --attached: #c21089;
   --attached-soft: #da84be;
   --busy: #ff7c22;

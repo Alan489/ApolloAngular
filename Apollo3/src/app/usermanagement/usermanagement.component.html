@@ -1,0 +1,157 @@
+<div class="screen">
+  <div class="HEADER">
+    <apolloheader></apolloheader>
+  </div>
+
+  <div class="content">
+    <div class="LEFT">
+      <div class="UsersControls">
+        <button class="NewUserButton" (click)="back()">Return to Incidents</button>
+        <button class="NewUserButton" *ngIf="accessLevel >= 8" (click)="userClicked(-2)">New User</button>
+      </div>
+      <div class="UsersContainer">
+        <div class="UsersHeader">
+          USERS
+        </div>
+        <div class="UserListContainer">
+          <div class="UserListing" *ngFor="let user of users; trackBy: trackUser" (click)="userClicked(user.id)">
+            {{user.name}}
+            <div class="littleText">({{user.username}})</div>
+            <div class="littleText" *ngIf="user.assignment != ''">[{{user.assignment}}]</div>
+          </div>
+          
+        </div>
+        
+      </div>
+    </div>
+    <div class="RIGHT">
+      <div class="NoneSelected" *ngIf="selectedUser == null">
+        Select a user to continue
+      </div>
+
+      <div class="RightContainer" *ngIf="selectedUser != null">
+
+        <div class="UserHeader" *ngIf="selectedUser.id != -1">
+          {{selectedUser.username}}
+        </div>
+
+        <div class="UserHeader" *ngIf="selectedUser.id == -1">
+          New User
+        </div>
+
+        <div class="UserOptionContainer" *ngIf="selectedUser.id == -1">
+          <div class="UserOptionHeader">
+            User logon ID
+          </div>
+          <div class="UserOptionDescription">
+            Username this user uses to login
+          </div>
+          <div class="UserOptionField">
+            <input type="text" [(ngModel)]="selectedUser.username" />
+          </div>
+        </div>
+
+        <div class="UserOptionContainer">
+          <div class="UserOptionHeader">
+            User Name
+          </div>
+          <div class="UserOptionDescription">
+            Users display name
+          </div>
+          <div class="UserOptionField">
+            <input type="text" [(ngModel)]="selectedUser.name" [disabled]="accessLevel < 8" />
+          </div>
+          <div class="UserOptionControls" *ngIf="selectedUser.id != -1">
+            <button class="saveButton" *ngIf="accessLevel >= 8" (click)="saveName()">Save</button>
+            <div class="alertMessage" *ngIf="accessLevel < 8">You are not authorized to modify this field.</div>
+          </div>
+        </div>
+
+        <div class="UserOptionContainer">
+          <div class="UserOptionHeader">
+            User MDT Access
+          </div>
+          <div class="UserOptionDescription">
+            Unit to connect to when logging in via MDT
+          </div>
+          <div class="UserOptionField" *ngIf="selectedUser.id != -1">
+            <select [(ngModel)]="selectedMDT">
+              <option value="NULL">No MDT Assignment</option>
+              <option value="MAP">Display Map</option>
+              <option value="BOARD">Display Board</option>
+              <option *ngFor="let u of units; trackBy: trackUser" value="{{u.unit}}">{{u.unit}}</option>
+            </select>
+          </div>
+          <div class="UserOptionControls">
+            <button class="saveButton" *ngIf="selectedUser.id != -1 && accessLevel >= 5" (click)="saveMDT()">Save</button>
+            <div class="alertMessage" *ngIf="accessLevel < 5">You are not authorized to modify this field.</div>
+            <div class="alertMessage" *ngIf="selectedUser.id == -1">Save User to Assign MDT Access</div>
+          </div>
+        </div>
+
+        <div class="UserOptionContainer">
+          <div class="UserOptionHeader">
+            User Access Level
+          </div>
+          <div class="UserOptionDescription">
+            0: MDT Only | 1+: Dispatcher | 5+: Power User (Manage MDT Assignments, Map Objects, Reopen Incidents) | 6+: Map Manager (Manage Map Categories) | 7+: CAD Manager (Manage Disposition/Call Types) | 8+: Super User (Manage Users)
+          </div>
+          <div class="UserOptionField">
+            <input type="number" [(ngModel)]="selectedUser.access_level" [disabled]="accessLevel < 8" />
+          </div>
+          <div class="UserOptionControls" *ngIf="selectedUser.id != -1">
+            <button class="saveButton" *ngIf="accessLevel >= 8" (click)="saveAccess()">Save</button>
+            <div class="alertMessage" *ngIf="accessLevel < 8">You are not authorized to modify this field.</div>
+          </div>
+        </div>
+
+        <div class="UserOptionContainer" *ngIf="selectedUser.id != -1">
+          <div class="UserOptionHeader">
+            User Lockout Management
+          </div>
+          <div class="UserOptionHeader">
+            <ng-container *ngIf="selectedUser.locked_out==1">
+              User is Locked
+            </ng-container>
+            <ng-container *ngIf="selectedUser.locked_out!=1">
+              User is Unlocked
+            </ng-container>
+          </div>
+          <div class="UserOptionControls" *ngIf="selectedUser.id != -1">
+            <button class="unlockButton" *ngIf="accessLevel >= 8 && selectedUser.locked_out==1" (click)="lockUser()">Unlock</button>
+            <button class="lockButton" *ngIf="accessLevel >= 8 && selectedUser.locked_out!=1" (click)="lockUser()">Lock</button>
+            <div class="alertMessage" *ngIf="accessLevel < 8">You are not authorized to modify this field.</div>
+          </div>
+        </div>
+
+        <div class="UserOptionContainer" *ngIf="selectedUser.id != -1">
+          <div class="UserOptionHeader">
+            User Password Management
+          </div>
+          <div class="UserOptionControls" *ngIf="selectedUser.id != -1">
+            <button class="expireButton" *ngIf="accessLevel >= 8 && selectedUser.change_password != 1" (click)="expirePassword()">Expire Password</button>
+            <button class="expireButton" *ngIf="accessLevel >= 8 && newPassword == ''" (click)="saveNewPassword()">Generate New Password</button>
+
+            <div class="newPassword" *ngIf="newPassword != ''">
+              New password: <span>{{newPassword}}</span>
+            </div>
+
+            <div class="alertMessage" *ngIf="selectedUser.change_password == 1">Password is Expired</div>
+            <div class="alertMessage" *ngIf="accessLevel < 8">You are not authorized to modify this field.</div>
+          </div>
+        </div>
+
+        <div class="UserOptionContainer" *ngIf="selectedUser.id == -1">
+          <div class="UserOptionControls" *ngIf="selectedUser.id == -1">
+            <div class="newPassword" *ngIf="newPassword != ''">
+              New password: <span>{{newPassword}}</span>
+            </div>
+            <button class="saveButton" *ngIf="accessLevel >= 8" (click)="saveNew()">Save</button>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>
+

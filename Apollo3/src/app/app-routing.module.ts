@@ -4,14 +4,20 @@ import { TestComponent } from './test';
 import { LoginComponent } from './unauthorized/login';
 import { AuthenticationService } from './services';
 import { DashboardComponent } from './cad';
+import { UserManagementComponent } from './usermanagement';
+import { BoardComponent } from './board';
 
 const routes: Routes = [
-  { path: 'cad', component: DashboardComponent, canActivate: [AuthenticationService] },
+  {
+    path: 'cad', component: DashboardComponent, canActivate: [AuthenticationService], data: { accessLevel: 1 } },
+  { path: 'users', component: UserManagementComponent, canActivate: [AuthenticationService], data: { accessLevel: 5 } },
+  { path: 'mdt', component: UserManagementComponent, canActivate: [AuthenticationService], data: { accessLevel: -1 } },
+  { path: 'map', component: UserManagementComponent, canActivate: [AuthenticationService], data: { accessLevel: -2 } },
+  { path: 'board', component: UserManagementComponent, canActivate: [AuthenticationService], data: { accessLevel: -3 } },
   { path: 'unauthorized', component: LoginComponent },
   { path: 'unauthorized/login', component: LoginComponent },
 
-  // We want to redirect to the login page if the user is unauthenticated, otherwise redirect to the test page.
-  { path: '**', redirectTo: 'cad'},
+  { path: '**', redirectTo: 'cad' },
   { path: '', pathMatch: 'full', redirectTo: 'cad'},
   //{ path: '**', redirectTo: 'unauthorized/login' }
 ];
