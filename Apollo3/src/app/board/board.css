@@ -1,0 +1,123 @@
+.screen {
+  display: flex;
+  flex-direction: column;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  top: 0;
+  position: absolute;
+  padding: 10px;
+  
+}
+
+.HEADER {
+  height: 3em;
+  display: flex;
+}
+
+.HEADERLEFT {
+  align-content: center;
+  font-size: 2em;
+  font-family: "Speeday";
+  text-align: center;
+  color: var(--text-muted);
+  text-shadow: 3px 5px 4px black;
+  align-content: center;
+  background-color: var(--panel);
+  padding-left: 8px;
+  padding-right: 20px;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  width: 10em;
+}
+
+.HEADERCENTER {
+  margin-right: 10px;
+  margin-left: 10px;
+  font-size: 2em;
+  flex: 1;
+  font-family: "Speeday";
+  text-align: center;
+  color: var(--text-muted);
+  text-shadow: 3px 5px 4px black;
+  align-content: center;
+  background-color: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+}
+
+.HEADERRIGHT {
+  text-align: center;
+  position: relative;
+  float: right;
+  padding-right: 6px;
+  padding-left: 6px;
+  font-size: 30px;
+  color: var(--text-muted);
+  font-family: "Noto Sans Mono", monospace;
+  font-weight: bold;
+  align-content: center;
+  text-shadow: 3px 5px 4px black;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  background-color: var(--panel);
+  width: 10em;
+}
+
+.BODY {
+  margin-top: 7px;
+  display: flex;
+  min-height: 0;
+  flex-wrap: wrap;
+  padding-top: 20px;
+  justify-content: space-evenly;
+}
+
+.UnitInformation {
+  display: flex;
+  flex-direction:column;
+  padding: 5px;
+  margin-right: 10px;
+  margin-bottom: 20px;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  background-color: var(--panel);
+  width: 25em;
+  min-height: 7em;
+}
+  .UnitInformation.Attached {
+    background-color: var(--attached-seethrough);
+    border-color: var(--attached);
+  }
+  .UnitInformation.Busy {
+    background-color: var(--busy-seethrough);
+    border-color: var(--busy);
+  }
+
+.unitName {
+  font-size: 2em;
+}
+
+.unitAttachment, .PersonnelLine {
+  font-size: 1.25em;
+}
+
+  .unitAttachment div, .UnitUnattached div{
+    margin-bottom: 8px;
+  }
+
+.Status {
+  border-bottom: 1px solid var(--border);
+  padding-bottom: 3px;
+}
+
+.Busy .Status{
+  border-bottom: 1px solid var(--busy);
+  padding-bottom: 3px;
+}
+
+.IncidentNumber {
+  padding-bottom: 3px;
+  font-size: .725em;
+  border-bottom: 1px solid var(--attached);
+}

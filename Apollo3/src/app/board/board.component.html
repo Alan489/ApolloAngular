@@ -1,0 +1,47 @@
+<div class="screen">
+  <div class="HEADER">
+    <div class="HEADERLEFT">
+      APOLLO CAD
+    </div>
+    <div class="HEADERCENTER">
+      {{sysname}}
+    </div>
+    <div class="HEADERRIGHT">
+      {{clockString}}
+    </div>
+  </div>
+
+  <div class="BODY">
+    <div *ngFor="let unit of unitunits; trackBy: trackIncident" [ngClass]="{'UnitInformation': true, 'Attached': unit.status=='Attached to Incident', 'InService': unit.status=='In Service', 'Busy': unit.status=='Busy'}">
+      <div class="unitName">
+        {{unit.unit}}
+      </div>
+      <div class="unitAttachment" *ngIf="unit.incident!=null">
+        <div class="IncidentNumber">
+          Attached: {{unit.incident?.alternate_cad}}
+        </div>
+        <div class="Address">
+          Address: {{unit.incident?.location ?? 'No Details.'}}
+        </div>
+        <div class="Location">
+          Location: {{unit.incident?.unit_number ?? 'No Details.'}}
+        </div>
+        <div class="Type">
+          Type: {{unit.incident?.call_type ?? 'No Details.'}}
+        </div>
+        <div class="Details">
+          Details: {{unit.incident?.call_details ?? 'No Details.'}}
+        </div>
+      </div>
+      <div class="UnitUnattached" *ngIf="unit.incident==null">
+        <div class="Status">
+          {{unit.status}}
+        </div>
+        <div class="PersonnelLine" *ngFor="let line of unit.personnel?.split('\n')">
+          {{line}}
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+

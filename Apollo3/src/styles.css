@@ -25,8 +25,10 @@
   --attention: rgba(156, 47, 59, 0.5);
   --attached: #c21089;
   --attached-soft: #da84be;
+  --attached-seethrough: rgba(194, 16, 137, 0.25);
   --busy: #ff7c22;
   --busy-soft: #b48d72;
+  --busy-seethrough: rgba(255, 124, 34, .25);
   --shadow: 0 12px 36px rgba(0, 0, 0, 0.35);
 }
 

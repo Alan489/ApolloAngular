@@ -8,7 +8,7 @@
         Username
       </div>
       <span class="formInput">
-        <input type="text" placeholder="Username" [(ngModel)]="username" />
+        <input type="text" placeholder="Username" [(ngModel)]="username" [disabled]="cpr" />
       </span>
     </div>
     <div class="formElement">
@@ -16,13 +16,33 @@
         Password
       </div>
       <span class="formInput">
-        <input type="password" placeholder="Password" [(ngModel)]="password" (keydown.enter)="login()" />
+        <input type="password" placeholder="Password" [(ngModel)]="password" (keydown.enter)="login()" [disabled]="cpr" />
+      </span>
+    </div>
+    <div class="formElement" *ngIf="cpr">
+      <div class="formLabel">
+        New Password
+      </div>
+      <span class="formInput">
+        <input type="password" placeholder="New Password" [(ngModel)]="cp1"/>
+      </span>
+    </div>
+    <div class="formElement" *ngIf="cpr">
+      <div class="formLabel">
+        Confirm Password
+      </div>
+      <span class="formInput">
+        <input type="password" placeholder="Confirm Password" [(ngModel)]="cp2"  />
       </span>
     </div>
     <div class="formElement">
-      <span class="formInputButton">
+      <span class="formInputButton" *ngIf="!cpr">
         <button class="formButton" (click)="login()">Log in</button>
-        <button class="formButtonTransfer">MDT Log in</button>
+        <button class="formButtonTransfer" (click)="loginMDT()">MDT Log in</button>
+      </span>
+      <span class="formInputButton" *ngIf="cpr">
+        <button class="formButton" (click)="cp()">Change Password</button>
+        <button class="formButtonTransfer" (click)="cancelCPR()">Cancel</button>
       </span>
     </div>
     <div class="formResponse">

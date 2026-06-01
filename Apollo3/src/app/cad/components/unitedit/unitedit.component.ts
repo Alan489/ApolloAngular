@@ -132,6 +132,7 @@ export class UnitEditComponent implements OnInit {
   }
 
   saveUnit() {
+    console.log(this.personnel)
     this.http.post<UnitDetails>(`https://${this.config.systemURL.trim()}/API/Units/Units/get/${this.unitListing?.unit}`, this.authService.getSession()).subscribe(
       (response) => {
         if (response.status == "Attached to Incident") {
@@ -140,6 +141,7 @@ export class UnitEditComponent implements OnInit {
         response.personnel = this.personnel;
         response.role = this.role;
         response.update_ts = new Date();
+        
 
         let unitSave: SaveUnitInterface = {
           unit: response,

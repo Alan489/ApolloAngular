@@ -8,12 +8,11 @@ import { UserManagementComponent } from './usermanagement';
 import { BoardComponent } from './board';
 
 const routes: Routes = [
-  {
-    path: 'cad', component: DashboardComponent, canActivate: [AuthenticationService], data: { accessLevel: 1 } },
+  { path: 'cad', component: DashboardComponent, canActivate: [AuthenticationService], data: { accessLevel: 1 } },
   { path: 'users', component: UserManagementComponent, canActivate: [AuthenticationService], data: { accessLevel: 5 } },
   { path: 'mdt', component: UserManagementComponent, canActivate: [AuthenticationService], data: { accessLevel: -1 } },
   { path: 'map', component: UserManagementComponent, canActivate: [AuthenticationService], data: { accessLevel: -2 } },
-  { path: 'board', component: UserManagementComponent, canActivate: [AuthenticationService], data: { accessLevel: -3 } },
+  { path: 'board', component: BoardComponent, canActivate: [AuthenticationService], data: { accessLevel: -3 } },
   { path: 'unauthorized', component: LoginComponent },
   { path: 'unauthorized/login', component: LoginComponent },
 
