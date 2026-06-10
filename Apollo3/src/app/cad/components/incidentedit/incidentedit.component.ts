@@ -18,6 +18,8 @@ interface SaveIncidentRequest {
   session: Session;
   incident: IncidentInformation;
 }
+
+
 interface Dictionary {
   [key: string]: boolean;
 }
@@ -39,6 +41,10 @@ export class IncidentEditComponent implements OnInit {
 
   public incTypes: string[] = [];
   public dispTypes: string[] = [];
+  public dispUnitTypes: string[] = [];
+
+  public dispositioning: Record<string, string> = {}
+;
 
   public attachments: UnitAttachment[] = [];
   public notes: Note[] = [];
@@ -69,6 +75,7 @@ export class IncidentEditComponent implements OnInit {
     this.currIncident = this.incident;
     this.getincTypes();
     this.getdispTypes();
+    this.getunitDispTypes();
     this.getUnits();
     this.getNotes();
     
@@ -217,7 +224,8 @@ export class IncidentEditComponent implements OnInit {
       transport_time: null,
       transportdone_time: null,
       cleared_time: null,
-      color: ''
+      color: '',
+      unit_disposition: null
     });
 
     if (this.currIncident) {
@@ -268,17 +276,36 @@ export class IncidentEditComponent implements OnInit {
     );
   }
 
+  getunitDispTypes() {
+    this.http.post<string[]>(`https://${this.config.systemURL.trim()}/API/Incidents/Incidents/get/dispounittypes`, this.authService.getSession()).subscribe(
+      (response) => {
+        this.dispUnitTypes = response;
+      },
+      (error) => {
+        console.log(error);
+      }
+    );
+  }
+
   getUnits() {
     this.http.post<UnitAttachment[]>(`https://${this.config.systemURL.trim()}/API/Units/Units/get/attachment/${this.currIncident?.incident_id}`, this.authService.getSession()).subscribe(
       (response) => {
 
         this.attachments = response.map(x => ({
           ...x,
-          dispatch_time: x.dispatch_time ?new Date(x.dispatch_time) : null,
-          ts_arrival: x.arrival_time ? new Date(x.arrival_time) : null,
-          ts_opened: x.transport_time ? new Date(x.transport_time) : null,
-          ts_complete: x.transportdone_time ? new Date(x.transportdone_time) : null
+          dispatch_time: x.dispatch_time ? new Date(x.dispatch_time) : null,
+          arrival_time: x.arrival_time ? new Date(x.arrival_time) : null,
+          transport_time: x.transport_time ? new Date(x.transport_time) : null,
+          transportdone_time: x.transportdone_time ? new Date(x.transportdone_time) : null,
+          cleared_time: x.cleared_time ? new Date(x.cleared_time) : null,
+          unit_disposition: x.unit_disposition ?? 'NULL'
         }));
+
+        this.attachments.forEach(a => {
+          if (this.dispositioning[a.unit] == null && a.cleared_time == null) {
+            this.dispositioning[a.unit] = 'NULL';
+          }
+        });
 
         if (this.currIncident && this.attachedUnits.length > 0) {
           this.currIncident.disposition = null;
@@ -576,11 +603,14 @@ export class IncidentEditComponent implements OnInit {
   CLR(attachment: UnitAttachment) {
     //https://localhost:7208/API/Units/Units/post/attachment/431/cleared
 
+    if (this.dispositioning[attachment.unit] == null || this.dispositioning[attachment.unit] == 'NULL') return;
+
     attachment.cleared_time = new Date();
+    attachment.unit_disposition = this.dispositioning[attachment.unit];
 
-    this.http.post(`https://${this.config.systemURL.trim()}/API/Units/Units/post/attachment/${attachment.attachmentID}/cleared`, this.authService.getSession()).subscribe(
+    this.http.post(`https://${this.config.systemURL.trim()}/API/Units/Units/post/attachment/${attachment.attachmentID}/cleared/${this.dispositioning[attachment.unit].replaceAll('/', '|')}`, this.authService.getSession()).subscribe(
       (response) => {
-
+        this.dispositioning[attachment.unit] = 'NULL';
       },
       (error) => {
         console.log(error);
@@ -658,6 +688,6 @@ export class IncidentEditComponent implements OnInit {
     return formatted || "--:--";
   }
   get filteredNotes() {
-    return this.notes.filter(n => !n.message.startsWith('UPDATED INCIDENT') && n.message != 'On Scene' && n.message != 'Dispatched' && n.message != 'In Service' && n.message != 'Transporting' && n.message != 'Arrived');
+    return this.notes.filter(n => !n.message.startsWith('UPDATED INCIDENT') && n.message != 'On Scene' && n.message != 'Dispatched' && n.message != 'In Service' && n.message != 'Transporting' && n.message != 'Arrived' && !n.message.startsWith('Cleared Unit From Scene with Disposition'));
   }
 }

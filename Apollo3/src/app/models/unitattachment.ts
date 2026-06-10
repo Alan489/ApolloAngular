@@ -7,4 +7,5 @@ export interface UnitAttachment {
   transportdone_time: Date | null;
   cleared_time: Date | null;
   color: string;
+  unit_disposition: string | null;
 }

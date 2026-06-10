@@ -1,0 +1,24 @@
+
+  <div class="HEADER">
+    Incident Type Management
+  </div>
+
+  <div class="content">
+    <div class="ListItem" *ngFor="let dispo of dispos; trackBy: trackIncident">
+      <div class="ItemControls">
+        <div [ngClass]="{'Switch': true, 'Active': dispo.active == 'Y', 'Inactive': dispo.active == 'N'}" (click)="switchDisposition(dispo)">
+
+        </div>
+      </div>
+      <div class="ItemName">
+        {{dispo.type}}
+      </div>
+    </div>
+    <div class="ListItem">
+      <div class="ItemControls">
+        <div class="Switch Active" (click)="createDisposition()">
+        </div>
+      </div>
+      <input class="ItemName" [(ngModel)]="newDispo"/>
+    </div>
+  </div>

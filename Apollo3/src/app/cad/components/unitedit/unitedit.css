@@ -28,11 +28,11 @@
 
 .PersonnelInput{
   margin-top: 10px;
-  margin-bottom: 10px;
+  margin-bottom: 0px;
   width: 100%;
 }
 .RoleInput{
-  
+  margin-top: 10px;
 }
 
 .Controls {

@@ -85,7 +85,7 @@ button {
   transition: color .25s, border-color .25s;
 }
 
-.checkAddressButton, .NotesSubmit, .UnitAttachedControlButton {
+.checkAddressButton, .NotesSubmit, .UnitAttachedControlButton, .UnitClearButton {
   margin-top: 4px;
   padding: 4px;
   border-radius: 7px;
@@ -95,7 +95,7 @@ button {
   transition: color .25s, border-color .25s;
 }
 
-  .checkAddressButton:hover, .NotesSubmit:not(:disabled):hover, .UnitAttachedControlButton:hover {
+  .checkAddressButton:hover, .NotesSubmit:not(:disabled):hover, .UnitAttachedControlButton:hover, .UnitClearButton:hover {
     border-color: var(--text);
     color: var(--text);
   }
@@ -314,9 +314,14 @@ select {
   padding-bottom: 7px;
 }
 
-.UnitAttached{
+.UnitAttached {
   line-height: 1.4em;
-  padding-left: 3px;
+  padding: 3px;
+  flex-wrap: wrap;
+  margin-top: 5px;
+  background-color: var(--panel-alt);
+  border-radius: 5px;
+  border: 1px solid var(--border);
 }
 
 .UnitAttached:hover {
@@ -352,4 +357,20 @@ select {
 
 .autoCompleteElement:hover {
   background-color: rgba(100,100,100,.5);
+}
+
+.UnitAttachedDispositioning {
+  flex: 1;
+  flex-basis: 100%;
+  display: flex;
+  align-items: center;
+  display: flex;
+}
+
+.UnitAttachedDispositioning select{
+  margin-right: 8px;
+}
+
+.Detached{
+  color: var(--text-muted);
 }

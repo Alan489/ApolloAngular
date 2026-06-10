@@ -1,0 +1,212 @@
+.screen {
+  display: flex;
+  flex-direction: column;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  top: 0;
+  position: absolute;
+  padding: 10px;
+  
+}
+
+.content {
+  display: flex;
+  flex: 1;
+  min-height: 0;
+}
+
+.LEFT {
+  margin-top: 7px;
+  display: flex;
+  flex-direction: column;
+  border: 1px solid var(--border);
+  background-color: var(--panel);
+  border-radius: 10px;
+  padding: 5px;
+  min-width: 15em;
+  
+}
+
+.RIGHT {
+  margin-top: 7px;
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  border: 1px solid var(--border);
+  background-color: var(--panel);
+  border-radius: 10px;
+  padding-top: 10px;
+  padding-left: 10px;
+  padding-bottom: 10px;
+  margin-left: 10px;
+  
+}
+
+.RightContainer {
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  overflow-y: scroll;
+  scrollbar-width: thin;
+  scrollbar-color: var(--border) var(--panel);
+  padding-right: 5px;
+}
+
+.LeftControls {
+  display: flex;
+  margin-bottom: 5px;
+  flex-direction: column;
+}
+
+.LeftContainer {
+  display: flex;
+  flex: 1;
+  flex-direction:column;
+  min-height:0;
+}
+
+.LeftListContainer {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-height: 0;
+  overflow-y: scroll;
+  direction: rtl;
+  scrollbar-width: thin;
+  scrollbar-color: var(--border) var(--panel);
+  
+}
+
+.LeftListing {
+
+}
+
+.LeftHeader {
+  text-align: center;
+  font-family: "Speeday";
+  font-size: 1.2em;
+  overflow: clip;
+  text-shadow: 3px 5px 4px black;
+  align-content: center;
+  padding-bottom: 7px;
+  margin-bottom: 8px;
+  margin-top: 5px;
+  border-bottom: 1px solid var(--border);
+}
+
+.LeftListing {
+  margin-left: 5px;
+  margin-right: 5px;
+  margin-top: 8px;
+  padding: 5px;
+  padding-left: 5px;
+  direction: ltr;
+  border: 1px solid var(--border);
+  border-radius: 5px;
+  background-color: var(--panel);
+  width: 13em;
+}
+
+  .LeftListing:not(.disabled) {
+    border-left: 5px solid var(--ok);
+  }
+
+  .LeftListing.disabled{
+    border-left: 5px solid var(--alert);
+  }
+
+  .LeftListing:not(.disabled):hover {
+    background-color: var(--panel-alt);
+  }
+
+.littleText{
+  color: var(--border);
+}
+
+.NoneSelected {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center
+}
+
+
+*:focus {
+  outline: none;
+}
+
+.alertMessage{
+  color: var(--alert);
+}
+
+
+input, select {
+  position: relative;
+  left: 0;
+  width: 100%;
+  border-radius: 7px;
+  color: var(--text);
+  background-color: var(--panel-alt);
+  border: 1px solid var(--border);
+  height: 1.8em;
+}
+
+button {
+  margin-top: 2px;
+  padding: 4px;
+  border-radius: 7px;
+  background-color: var(--panel-alt);
+  transition: color .25s, border-color .25s;
+  margin: 2px;
+}
+
+.StandardButton {
+  margin-top: 2px;
+  padding: 4px;
+  border-radius: 7px;
+  border: 1px solid var(--border);
+  background-color: var(--panel-alt);
+  color: var(--text-muted);
+  transition: color .25s, border-color .25s;
+  flex: 1;
+}
+
+  .StandardButton:hover {
+    border-color: var(--text);
+    color: var(--text);
+  }
+
+.saveButton, .unlockButton {
+  color: var(--ok-soft);
+  border: 1px solid var(--ok-soft);
+}
+
+.lockButton {
+  color: var(--alert-soft);
+  border: 1px solid var(--alert-soft);
+}
+
+.saveButton:hover, .unlockButton:hover {
+  color: var(--ok);
+  border: 1px solid var(--ok);
+}
+
+.lockButton:hover {
+  color: var(--alert);
+  border: 1px solid var(--alert);
+}
+
+.expireButton {
+  color: var(--busy-soft);
+  border: 1px solid var(--busy-soft);
+}
+
+.expireButton:hover {
+  color: var(--busy);
+  border: 1px solid var(--busy);
+}
+
+.newPassword span{
+  user-select:text;
+}

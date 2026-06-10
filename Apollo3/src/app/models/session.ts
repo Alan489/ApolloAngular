@@ -11,6 +11,7 @@ export interface Session {
   unitAssignment: string | undefined;
   sysLat: number;
   sysLon: number;
+  sysZoom: number;
   googleLink: string;
   name: string;
 }

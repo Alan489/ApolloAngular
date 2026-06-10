@@ -200,9 +200,6 @@
                 <div class="UnitsHeaderTSElement">
                   ARR
                 </div>
-                <div class="UnitsHeaderTSElement">
-                  CLR
-                </div>
               </div>
             </div>
 
@@ -227,20 +224,24 @@
                   <div class="UnitAttachedTS" *ngIf="unit.transportdone_time">{{getFormattedTS(unit.transportdone_time)}}</div>
                   <button class="UnitAttachedControlButton" *ngIf="!unit.transportdone_time && unit.attachmentID != '-1'" (click)="ARR(unit)">ARR</button>
                 </div>
-                <div class="UnitAttachedControl">
-                  <div class="UnitAttachedTS" *ngIf="unit.cleared_time">{{getFormattedTS(unit.cleared_time)}}</div>
-                  <button class="UnitAttachedControlButton" *ngIf="!unit.cleared_time && unit.attachmentID != '-1'" (click)="CLR(unit)">CLR</button>
-                </div>
-
 
               </div>
-            </div>
-          </div>
 
+              <div class="UnitAttachedDispositioning">
+                <select [(ngModel)]="dispositioning[unit.unit]">
+                  <option [value]="'NULL'">None</option>
+                  <option *ngFor="let dispType of dispUnitTypes" [value]="dispType">
+                    {{dispType}}
+                  </option>
+                </select>
+                <button class="UnitClearButton" *ngIf="dispositioning[unit.unit] && dispositioning[unit.unit] != 'NULL'" (click)="CLR(unit)">Clear</button>
+              </div>
+            </div>
+
+          </div>
           <div class="NotesHeader">
             Previously Attached Units
           </div>
-
           <div class="Units Previous">
             <div class="UnitsHeader">
               <div class="UnitsHeaderElement">
@@ -264,11 +265,12 @@
                 </div>
               </div>
             </div>
-
             <div *ngFor="let unit of clearedUnits; trackBy: trackAttachment" class="UnitAttached">
+
               <div class="UnitAttachedName" style="color:{{unit.color}}">
                 {{unit.unit}}
               </div>
+
               <div class="UnitAttachedControls">
 
                 <div class="UnitAttachedControl">
@@ -287,8 +289,12 @@
                   <div class="UnitAttachedTS">{{getFormattedTS(unit.cleared_time)}}</div>
                 </div>
 
-
               </div>
+
+              <div *ngIf="unit.unit_disposition && unit.unit_disposition != 'NULL'" class="UnitAttachedDispositioning Detached">
+                {{unit.unit_disposition}}
+              </div>
+
             </div>
           </div>
 

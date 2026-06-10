@@ -42,4 +42,5 @@ html {
   color: var(--text);
   font-family: Helvetica, Arial, sans-serif;
   user-select: none;
+  color-scheme: dark;
 }

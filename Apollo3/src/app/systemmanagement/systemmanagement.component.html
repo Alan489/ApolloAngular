@@ -1,0 +1,58 @@
+<div class="screen">
+  <div class="HEADER">
+    <apolloheader></apolloheader>
+  </div>
+
+  <div class="content">
+    <div class="LEFT">
+      <div class="LeftControls">
+        <button class="StandardButton" (click)="back()">Return to Incidents</button>
+      </div>
+      <div class="LeftContainer">
+        <div class="LeftHeader">
+          ACTIONS
+        </div>
+        <div class="LeftListContainer">
+
+          <div class="LeftListing disabled">
+            Map Management
+            <div class="littleText">Manage map objects and categories</div>
+            <div class="littleText">Under development</div>
+          </div>
+
+          <div class="LeftListing" (click)="openIncidentTypes()" [class.disabled]="accessLevel < 7">
+            Incident Type Management
+            <div class="littleText">Manage Incident Types</div>
+            <div class="littleText" *ngIf="accessLevel < 7">No permission</div>
+          </div>
+
+          <div class="LeftListing" (click)="openIncidentDispositions()" [class.disabled]="accessLevel < 7">
+            Incident Disposition Management
+            <div class="littleText">Manage Incident Dispositions</div>
+            <div class="littleText" *ngIf="accessLevel < 7">No permission</div>
+          </div>
+
+          <div class="LeftListing" (click)="openUnitDispositions()" [class.disabled]="accessLevel < 7">
+            Unit Disposition Management
+            <div class="littleText">Manage Individual Unit Dispositions</div>
+            <div class="littleText" *ngIf="accessLevel < 7">No permission</div>
+          </div>
+
+        </div>
+        
+      </div>
+    </div>
+    <div class="RIGHT">
+      <div class="NoneSelected" *ngIf="state=='None'">
+        Select an action to continue.
+      </div>
+
+      <div class="RightContainer">
+        <incidentdispositions *ngIf="state=='incidentdispositions'"></incidentdispositions>
+        <unitdispositions *ngIf="state=='unitdispositions'"></unitdispositions>
+        <incidenttypes *ngIf="state=='incidenttypes'"></incidenttypes>
+      </div>
+    </div>
+  </div>
+</div>
+

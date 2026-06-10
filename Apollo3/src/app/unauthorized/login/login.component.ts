@@ -180,6 +180,8 @@ export class LoginComponent {
 
           if (session.unitAssignment == 'BOARD')
             this.router.navigate(['/board']);
+          if (session.unitAssignment == 'MAP')
+            this.router.navigate(['/map']);
 
         },
         (error) => {

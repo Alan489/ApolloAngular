@@ -17,6 +17,14 @@ interface UnitDetails {
   update_ts: Date | null
 }
 
+interface VehicleDetails {
+  vehicle_id: string,
+  unit_id: string | null,
+  lat: number,
+  lng: number,
+  ts: Date
+}
+
 interface SaveUnitInterface {
   session: Session,
   unit: UnitDetails
@@ -64,8 +72,11 @@ export class UnitEditComponent implements OnInit {
 
   public unit: string = '';
   public roles: string[] = [];
+  public vehicles: VehicleDetails[] = [];
   public personnel: string = '';
   public role: string = '';
+  public selectedVehicle: string = '!NULL!';
+  public previousVehicle: string = '!NULL!';
 
   constructor(private config: ConfigService, private router: Router, public datepipe: DatePipe, private authService: AuthenticationService, private http: HttpClient)
   {
@@ -75,6 +86,7 @@ export class UnitEditComponent implements OnInit {
   ngOnInit(): void {
     this.getUnitDetails();
     this.getRoles();
+    this.getVehicles();
     this.role = this.unitListing?.role ?? '';
     this.unit = this.unitListing?.unit ?? '';
     window.addEventListener('keydown', this.keyDownHandler);
@@ -84,6 +96,7 @@ export class UnitEditComponent implements OnInit {
     if (this.unit == this.unitListing?.unit)
       return;
 
+    this.getVehicles();
     this.unit = this.unitListing?.unit ?? '';
     this.getUnitDetails();
     this.role = this.unitListing?.role ?? '';
@@ -110,6 +123,25 @@ export class UnitEditComponent implements OnInit {
     this.http.post<string[]>(`https://${this.config.systemURL.trim()}/API/Units/Units/roles`, this.authService.getSession()).subscribe(
       (response) => {
         this.roles = response;
+      },
+      (error) => {
+        console.log(error);
+      }
+    );
+  }
+
+  getVehicles(): void {
+    this.http.post<VehicleDetails[]>(`https://${this.config.systemURL.trim()}/API/Units/Location/get`, this.authService.getSession()).subscribe(
+      (response) => {
+        this.vehicles = response;
+        const myVehicle: VehicleDetails | null = this.vehicles.find(v => v.unit_id == this.unitListing?.unit) ?? null;
+        if (myVehicle != null) {
+          this.selectedVehicle = myVehicle.vehicle_id;
+          this.previousVehicle = myVehicle.vehicle_id;
+        } else {
+          this.selectedVehicle = '!NULL!';
+          this.previousVehicle = '!NULL!'
+        }
       },
       (error) => {
         console.log(error);
@@ -149,6 +181,31 @@ export class UnitEditComponent implements OnInit {
         }
 
         this.http.post(`https://${this.config.systemURL.trim()}/API/Units/Units/update/`, unitSave).subscribe(
+          (response) => {
+          },
+          (error) => {
+            console.log(error);
+          }
+        );
+
+        if (this.previousVehicle == this.selectedVehicle)
+          return;
+
+        if (this.previousVehicle != '!NULL!')
+          this.http.post(`https://${this.config.systemURL.trim()}/API/Units/Location/assign/${this.previousVehicle}/!NULL!`, this.authService.getSession()).subscribe(
+            (response) => {
+            },
+            (error) => {
+              console.log(error);
+            }
+          );
+
+        this.previousVehicle = this.selectedVehicle;
+
+        if (this.selectedVehicle == '!NULL!')
+          return;
+
+        this.http.post(`https://${this.config.systemURL.trim()}/API/Units/Location/assign/${this.selectedVehicle}/${this.unitListing?.unit}`, this.authService.getSession()).subscribe(
           (response) => {
           },
           (error) => {

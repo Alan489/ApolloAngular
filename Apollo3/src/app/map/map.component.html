@@ -1,0 +1,43 @@
+<div class="screen">
+  <div class="HEADER">
+    <div class="HEADERLEFT">
+      APOLLO CAD
+    </div>
+    <div class="HEADERCENTER">
+      {{sysname}}
+    </div>
+    <div class="HEADERRIGHT">
+      {{clockString}}
+    </div>
+  </div>
+
+  <div class="BODY">
+
+    <gmp-map rendering-type="vector"
+             heading=90
+             [attr.center]="sysLat + ',' + sysLng"
+             [attr.zoom]="sysZoom"
+             [attr.color-scheme]="'DARK'"
+             color-scheme="DARK"
+             map-id="48d80325ba0e741ce5c07cd7">
+      <gmp-advanced-marker class="POILabel" *ngFor="let poi of pois; trackBy: trackPOI" [attr.position]="poi.poi_lat+','+poi.poi_lng">
+        <div class="POILabel2" [attr.style]="'background-color: rgba('+poi.bc+',.75); color: rgba('+poi.fc+',.75);'" zIndex="5">{{poi.poi_shortname}}</div>
+      </gmp-advanced-marker>
+
+      <gmp-advanced-marker class="IncidentLabel" *ngFor="let incident of incidentLocations; trackBy: trackIncident" [attr.position]="incident.lat+','+incident.log" zIndex="10">
+        <div class="IncidentLabel2">{{incident.call_number}}</div>
+      </gmp-advanced-marker>
+
+      <gmp-advanced-marker class="VehicleLabel" *ngFor="let vehicle of vehicles; trackBy: trackLocation" [attr.position]="vehicle.lat+','+vehicle.lng" zIndex="20">
+        <div class="VehicleLabel2">{{vehicle.unit_id??vehicle.vehicle_id}}</div>
+      </gmp-advanced-marker>
+
+
+
+    </gmp-map>
+
+  </div>
+</div>
+
+<script src=""
+        defer></script>

@@ -33,6 +33,16 @@
         <option *ngFor="let roleOpt of roles" [value]="roleOpt">{{roleOpt}}</option>
       </select>
     </div>
-    
+
+    <div class="RoleInput">
+      <div class="RoleHeader">
+        Vehicle Assignment
+      </div>
+      <select [(ngModel)]="selectedVehicle">
+        <option value="!NULL!">No assignment</option>
+        <option *ngFor="let vehicle of vehicles" [value]="vehicle.vehicle_id">{{vehicle.vehicle_id}}</option>
+      </select>
+    </div>
+
   </div>
 </div>
